@@ -8,6 +8,12 @@ class LeyunaLaboratoryApplicationTests {
 
     @Test
     void contextLoads() {
+        System.out.println(1);
+    }
+    
+    @Test
+    void casThreadTest(){
+        
     }
 
 }

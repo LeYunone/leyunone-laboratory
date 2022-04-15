@@ -6,10 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="leyuna-laboratory" />
+        <module name="laboratory-web" />
+        <module name="laboratory-core" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="laboratory-core" target="1.8" />
+      <module name="laboratory-web" target="1.8" />
       <module name="leyuna-laboratory" target="1.8" />
     </bytecodeTargetLevel>
   </component>
