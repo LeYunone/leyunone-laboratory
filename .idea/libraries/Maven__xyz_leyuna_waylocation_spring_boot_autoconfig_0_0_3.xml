@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: xyz.leyuna:waylocation-spring-boot-autoconfig:0.0.3">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../Maven/xyz/leyuna/waylocation-spring-boot-autoconfig/0.0.3/waylocation-spring-boot-autoconfig-0.0.3.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../../Maven/xyz/leyuna/waylocation-spring-boot-autoconfig/0.0.3/waylocation-spring-boot-autoconfig-0.0.3-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../Maven/xyz/leyuna/waylocation-spring-boot-autoconfig/0.0.3/waylocation-spring-boot-autoconfig-0.0.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

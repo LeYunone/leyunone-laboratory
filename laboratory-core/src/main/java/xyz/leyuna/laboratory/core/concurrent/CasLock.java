@@ -24,7 +24,9 @@ public class CasLock {
         while(!key.compareAndSet(null,thread.getId())){
             dThread.offer(thread);
             System.out.println("阻塞 进入一个线程");
-            LockSupport.park();;
+            //挂起 阻塞这个线程
+            LockSupport.park();
+            //等待这个线程被唤醒，继续抢夺资源
             dThread.remove(thread);
         }
     }

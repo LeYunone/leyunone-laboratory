@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.jeasy:easy-random-core:4.3.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../Maven/org/jeasy/easy-random-core/4.3.0/easy-random-core-4.3.0.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../../Maven/org/jeasy/easy-random-core/4.3.0/easy-random-core-4.3.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../Maven/org/jeasy/easy-random-core/4.3.0/easy-random-core-4.3.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
