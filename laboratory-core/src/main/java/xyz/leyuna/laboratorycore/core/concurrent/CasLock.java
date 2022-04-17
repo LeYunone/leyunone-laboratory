@@ -1,4 +1,4 @@
-package xyz.leyuna.laboratory.core.concurrent;
+package xyz.leyuna.laboratorycore.core.concurrent;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -18,16 +18,21 @@ public class CasLock {
     BlockingQueue<Thread> dThread = new LinkedBlockingQueue<>();
     
     public void lock(){
+        //控制自旋次数
+        Integer count = 0;
         //当前线程
         Thread thread = Thread.currentThread();
         //设置自旋 如果发现key值被改变，则说明有锁在竞争，进入锁流程
         while(!key.compareAndSet(null,thread.getId())){
             dThread.offer(thread);
-            System.out.println("阻塞 进入一个线程");
-            //挂起 阻塞这个线程
-            LockSupport.park();
-            //等待这个线程被唤醒，继续抢夺资源
-            dThread.remove(thread);
+            System.out.println("自旋:"+thread.getId());
+            if(count++>=10){
+                System.out.println("阻塞:"+thread.getId());
+                //挂起 阻塞这个线程
+                LockSupport.park();
+                //等待这个线程被唤醒，继续抢夺资源
+                dThread.remove(thread);
+            }
         }
     }
     
