@@ -4,23 +4,25 @@
 
 # 目前收录
 
-##core
+## core
 
 ### collection包
 
 #### SetAPI
 
-##### Fuction接口自定义UniqueSet
+Set集合Api
 
-集合去重 
+#### UniqueSet
+Fuction接口自定义UniqueSet: 集合去重 
 
 ### concurrent包
 
-#### 自定义CAS独占锁
+#### CasLock
 
-自旋 - 优化 
+自定义CAS独占锁: 自旋 - 优化 
 
-#### 模拟高并发场景
+#### ConcurrentScene
+模拟高并发场景
 
 
 
