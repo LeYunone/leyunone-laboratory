@@ -8,12 +8,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="laboratory-web" />
+        <module name="laboratory-test" />
         <module name="test" />
         <module name="laboratory-core" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="laboratory-core" target="1.8" />
+      <module name="laboratory-test" target="1.8" />
       <module name="laboratory-web" target="1.8" />
       <module name="leyuna-laboratory" target="1.8" />
       <module name="test" target="1.8" />

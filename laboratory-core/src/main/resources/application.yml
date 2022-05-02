@@ -1,0 +1,21 @@
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    default-property-inclusion: NON_NULL
+    time-zone: GMT+8
+  rabbitmq:
+    connection-timeout: 15000
+    password: guest
+    # 使用启用消息确认模式
+    publisher-confirm-type: correlated
+    username: guest
+    virtual-host: /
+dubbo:
+  application:
+    name: provider
+  registry:
+    protocol: nacos
+    address: 127.0.0.1:8848
+
+
+
