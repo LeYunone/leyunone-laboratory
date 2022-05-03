@@ -1,4 +1,4 @@
-package xyz.leyuna.laboratorycore.core.concurrent;
+package xyz.leyuna.laboratory.core.concurrent;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -11,12 +11,12 @@ import java.util.concurrent.locks.LockSupport;
  * 自定义一个 并且优化的cas锁
  */
 public class CasLock {
-    
+
     //存放caskey的线程表头
     AtomicReference<Long> key = new AtomicReference<>();
     //阻塞队列， 有区域时加入，否则阻塞线程执行
     BlockingQueue<Thread> dThread = new LinkedBlockingQueue<>();
-    
+
     public void lock(){
         //控制自旋次数
         Integer count = 0;
@@ -35,7 +35,7 @@ public class CasLock {
             }
         }
     }
-    
+
     public void unLock(){
         //如果还是当前锁的话，就解放锁
         if(key.compareAndSet(Thread.currentThread().getId(),null)){

@@ -1,4 +1,4 @@
-package xyz.leyuna.laboratorycore.core.provider;
+package xyz.leyuna.laboratory.core.provider;
 
 import org.apache.dubbo.config.annotation.DubboService;
 

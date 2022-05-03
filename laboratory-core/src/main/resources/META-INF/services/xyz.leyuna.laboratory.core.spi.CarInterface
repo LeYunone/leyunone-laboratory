@@ -1,0 +1,2 @@
+red = xyz.leyuna.laboratory.core.spi.RedCar
+yellow = xyz.leyuna.laboratory.core.spi.YellowCar

@@ -1,6 +1,6 @@
-package xyz.leyuna.laboratorycore.core.collection;
+package xyz.leyuna.laboratory.core.collection;
 
-import xyz.leyuna.laboratorycore.core.bean.Person;
+import xyz.leyuna.laboratory.core.bean.Person;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package xyz.leyuna.laboratorycore.core.concurrent;
+package xyz.leyuna.laboratory.core.concurrent;
 
 /**
  * @author pengli

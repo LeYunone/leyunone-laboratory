@@ -1,12 +1,7 @@
-package xyz.leyuna.laboratorycore;
+package xyz.leyuna.laboratory;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import xyz.leyuna.laboratorycore.core.bean.Person;
-import xyz.leyuna.laboratorycore.core.collection.TreeSetAPI;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @SpringBootTest
 class LaboratoryCoreApplicationTests {
