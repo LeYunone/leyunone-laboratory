@@ -1,5 +1,7 @@
 package xyz.leyuna.laboratory.core.spi;
 
+import org.apache.dubbo.common.URL;
+import org.apache.dubbo.common.extension.Adaptive;
 import org.apache.dubbo.common.extension.SPI;
 
 /**
@@ -10,5 +12,6 @@ import org.apache.dubbo.common.extension.SPI;
 @SPI
 public interface CarInterface {
 
-    void didi();
+    @Adaptive("carType")
+    void didi(URL url);
 }
