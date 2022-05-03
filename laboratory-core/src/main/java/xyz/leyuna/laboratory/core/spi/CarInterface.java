@@ -9,7 +9,7 @@ import org.apache.dubbo.common.extension.SPI;
  * @email 365627310@qq.com
  * @date 2022-05-03
  */
-@SPI
+@SPI(value = "red")
 public interface CarInterface {
 
     @Adaptive("carType")
