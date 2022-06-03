@@ -21,13 +21,22 @@ public class ConcurrentScene {
 
     public static void main(String[] args) throws InterruptedException {
         List<Callable> temp = new ArrayList<>();
-        for(int i=0;i<=100;i++){
+        for(int i=0;i<=3;i++){
             final int j = i;
             temp.add(new Callable() {
                 @Override
                 public Object call() throws Exception {
-                    count--;
-                    return count;
+                    while(true){
+                        if(count>0){
+                            synchronized (count){
+                                count--;
+                                System.out.println(j+"==="+count);
+                            }
+                        }else{
+                            return j;
+                        }
+                    }
+
                 }
             });
         }
