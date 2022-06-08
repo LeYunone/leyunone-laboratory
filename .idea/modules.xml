@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/laboratory-core/laboratory-core.iml" filepath="$PROJECT_DIR$/laboratory-core/laboratory-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/laboratory-rpc/laboratory-rpc.iml" filepath="$PROJECT_DIR$/laboratory-rpc/laboratory-rpc.iml" />
       <module fileurl="file://$PROJECT_DIR$/laboratory-test/laboratory-test.iml" filepath="$PROJECT_DIR$/laboratory-test/laboratory-test.iml" />
       <module fileurl="file://$PROJECT_DIR$/laboratory-web/laboratory-web.iml" filepath="$PROJECT_DIR$/laboratory-web/laboratory-web.iml" />
       <module fileurl="file://$PROJECT_DIR$/leyuna-laboratory.iml" filepath="$PROJECT_DIR$/leyuna-laboratory.iml" />

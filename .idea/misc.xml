@@ -7,6 +7,7 @@
         <option value="$PROJECT_DIR$/laboratory-web/pom.xml" />
         <option value="$PROJECT_DIR$/laboratory-core2/pom.xml" />
         <option value="$PROJECT_DIR$/laboratory-test/pom.xml" />
+        <option value="$PROJECT_DIR$/laboratory-rpc/pom.xml" />
       </list>
     </option>
   </component>
