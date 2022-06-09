@@ -6,16 +6,17 @@ import java.util.Map;
 /**
  * @author LeYuna
  * @email 365627310@qq.com
- * @date 2022-06-08
+ * @date 2022-06-09
+ * 服务与注册中心
  */
-public class ServerConfig {
+public class RpcServer {
 
     /**
      * 服务列表
      */
     private Map<String, MyURI> server;
 
-    public ServerConfig() {
+    public RpcServer() {
         server = new HashMap<>();
     }
 
