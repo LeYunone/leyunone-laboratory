@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <!--    <script th:src="@{js/vue.js}" type="application/javascript"></script>-->
+    <script src="./js/vue.js" type="application/javascript"></script>
+    <!-- 引入样式 -->
+    <!--    <link rel="stylesheet" th:href="@{/element/theme/index.css}"/>-->
+    <link rel="stylesheet" href="./element/theme/index.css"/>
+    <!-- 引入组件库 -->
+    <!--    <script th:src="@{/element/index.js}" type="application/javascript"></script>-->
+    <script src="./element/index.js" type="application/javascript"></script>
+
+    <script src="./js/axios.js"></script>
+
+</head>
+<body>
+<div id="app" style="width: 80%;margin-left: 200px">
+    <button @click="readTestFile()"></button>
+</div>
+</body>
+</html>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data() {
+            return {}
+        },
+        method: {
+            readTestFile() {
+
+                const file = this.loadFile('test.properties')
+                console.info(file)
+                console.log(this.unicodeToUtf8(file))
+            },
+
+            // 读取文件
+            loadFile(name) {
+
+                const xhr = new XMLHttpRequest()
+                const okStatus = document.location.protocol === 'file:' ? 0 : 200
+                xhr.open('GET', name, false)
+                xhr.overrideMimeType('text/html;charset=utf-8')
+                // 默认为utf-8
+                xhr.send(null)
+                return xhr.status === okStatus ? xhr.responseText : null
+            },
+
+            // unicode转utf-8
+            unicodeToUtf8(data) {
+                data = data.replace(/\\/g, '%')
+                return unescape(data)
+            }
+        }
+    })
+</script>
+<style>
+    .table-input {
+        width: 1000px
+    }
+
+    .table-lab {
+        width: 100px
+    }
+
+    .div-button {
+        float: right;
+        padding: 0 50px;
+        cursor: pointer;
+        line-height: 70px;
+    }
+</style>
