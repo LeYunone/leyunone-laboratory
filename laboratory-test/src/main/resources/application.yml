@@ -1,9 +1,9 @@
-dubbo:
-  application:
-    name: customer
-  registry:
-    protocol: nacos
-    address: 127.0.0.1:8848
-
-
-
+#dubbo:
+#  application:
+#    name: customer
+#  registry:
+#    protocol: nacos
+#    address: 127.0.0.1:8848
+#
+#
+#

@@ -13,9 +13,10 @@ spring:
 dubbo:
   application:
     name: provider
-  registry:
-    protocol: nacos
-    address: 127.0.0.1:8848
+    id: dubbo-provider
+#  registry:
+#    protocol: nacos
+#    address: 127.0.0.1:8848
 
 
 
