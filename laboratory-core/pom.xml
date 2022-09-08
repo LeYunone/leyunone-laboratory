@@ -19,18 +19,11 @@
                             <addClasspath>true</addClasspath>
                         </manifest>
                         <manifestEntries>
-                            <Premain-Class>
-                                xyz.leyuna.laboratory.core.agent.AgentScene
-                            </Premain-Class>
-                            <Can-Redefine-Classes>
-                                true
-                            </Can-Redefine-Classes>
-                            <Can-Retransform-Classes>
-                                true
-                            </Can-Retransform-Classes>
-                            <Manifest-Version>
-                                true
-                            </Manifest-Version>
+                            <Premain-Class>xyz.leyuna.laboratory.core.agent.AgentScene</Premain-Class>
+                            <Agent-Class>xyz.leyuna.laboratory.core.agent.AgentScene</Agent-Class>
+                            <Can-Redefine-Classes>true</Can-Redefine-Classes>
+                            <Can-Retransform-Classes>true</Can-Retransform-Classes>
+                            <Manifest-Version>true</Manifest-Version>
                         </manifestEntries>
                     </archive>
                 </configuration>
@@ -59,9 +52,28 @@
             <artifactId>lombok</artifactId>
             <version>1.18.20</version>
         </dependency>
+
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy-agent</artifactId>
+            <version>1.4.32</version>
+        </dependency>
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <version>1.8.12</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sun</groupId>
+            <artifactId>tools</artifactId>
+            <version>1.8.0</version>
+            <scope>system</scope>
+            <systemPath>C:\Program Files\java\jdk1.8.0_201\lib\tools.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -113,13 +125,13 @@
                 <scope>import</scope>
             </dependency>
             <!-- Apache Dubbo  -->
-<!--            <dependency>-->
-<!--                <groupId>org.apache.dubbo</groupId>-->
-<!--                <artifactId>dubbo-dependencies-bom</artifactId>-->
-<!--                <version>${dubbo.version}</version>-->
-<!--                <type>pom</type>-->
-<!--                <scope>import</scope>-->
-<!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>org.apache.dubbo</groupId>-->
+            <!--                <artifactId>dubbo-dependencies-bom</artifactId>-->
+            <!--                <version>${dubbo.version}</version>-->
+            <!--                <type>pom</type>-->
+            <!--                <scope>import</scope>-->
+            <!--            </dependency>-->
         </dependencies>
     </dependencyManagement>
 
