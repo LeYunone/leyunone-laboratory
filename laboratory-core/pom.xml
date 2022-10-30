@@ -112,6 +112,11 @@
             <artifactId>zookeeper</artifactId>
             <version>3.7.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>3.1.1</version>
+        </dependency>
 
     </dependencies>
 
