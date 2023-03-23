@@ -1,3 +1,0 @@
-red = xyz.leyuna.laboratory.core.spi.RedCar
-yellow = xyz.leyuna.laboratory.core.spi.YellowCar
-xyz.leyuna.laboratory.core.spi.CarAOP

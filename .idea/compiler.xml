@@ -7,11 +7,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="laboratory-web" />
+        <module name="laboratory-core" />
         <module name="laboratory-rpc" />
         <module name="laboratory-test" />
+        <module name="laboratory-web" />
         <module name="test" />
-        <module name="laboratory-core" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
