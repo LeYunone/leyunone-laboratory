@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.concurrent.*;
 
 /**
- * @author pengli
+ * @author leyunone
  * @date 2022-04-17
  * 模拟并发场景
  */

@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.LockSupport;
 
 /**
- * @author pengli
+ * @author leyunone
  * @date 2022-04-15
  * 自定义一个 并且优化的cas锁
  */

@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.LockSupport;
 
 /**
- * @author pengli
+ * @author leyunone
  * @date 2022-04-18
  * 使用Redis 自定义一把分布式锁
  */
