@@ -1,6 +1,7 @@
 package com.leyunone.laboratory.core.bean;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @AllArgsConstructor
+@Builder
 @NoArgsConstructor
 public class Person {
 
