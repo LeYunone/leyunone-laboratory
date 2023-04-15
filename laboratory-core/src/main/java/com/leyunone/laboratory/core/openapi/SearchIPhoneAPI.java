@@ -4,6 +4,10 @@ package com.leyunone.laboratory.core.openapi;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 手机号遍历 查询 
@@ -15,9 +19,10 @@ public class SearchIPhoneAPI {
 
     public static void main(String[] args0) throws IOException {
 
-        FileWriter fileWriter = new FileWriter("/Users/huang/test/test1.txt");
         String httpUrl = "http://apis.baidu.com/chazhao/mobilesearch/phonesearch";
         String httpArg = "";
+        List<String> ds = new ArrayList<>();
+        Set<String> ss = new HashSet<>();
         for (int i = 0; i <= 9999; i++) {
             if (i >= 1000) {
                 httpArg = "phone=178" + String.valueOf(i) + "0077";
@@ -28,13 +33,14 @@ public class SearchIPhoneAPI {
             } else {
                 httpArg = "phone=178000" + String.valueOf(i) + "0077";
             }
-            String jsonResult = request(httpUrl, httpArg);
-            if (jsonResult.contains("上海")) {
-                fileWriter.write(httpArg + "\n\t");
-            }
+//            String jsonResult = request(httpUrl, httpArg);
+//            if (jsonResult.contains("上海")) {
+//                fileWriter.write(httpArg + "\n\t");
+//            }
+            ds.add(httpArg);
+            ss.add(httpArg);
         }
-        fileWriter.flush();
-        fileWriter.close();
+        System.out.println(ds.size());
     }
 
     /**
