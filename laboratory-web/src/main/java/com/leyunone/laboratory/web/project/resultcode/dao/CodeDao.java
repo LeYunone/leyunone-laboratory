@@ -1,0 +1,17 @@
+package com.leyunone.laboratory.web.project.resultcode.dao;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.leyunone.laboratory.core.dao.BaseDao;
+import com.leyunone.laboratory.web.project.resultcode.bean.Code;
+import com.leyunone.laboratory.web.project.resultcode.bean.CodeQuery;
+import org.springframework.stereotype.Service;
+
+/**
+ * @author LeYunone
+ * @email 365627310@qq.com
+ * @date 2023-04-16
+ */
+public interface CodeDao extends BaseDao<Code> {
+
+    Page<Code> selectList(CodeQuery query);
+}

@@ -1,0 +1,183 @@
+// 变量集合文件- variables.scss
+// 菜单色
+$menuText:#5E6468;          // 菜单文字颜色
+$menuActiveText:#5E6468;    // 激活的父菜单文字色
+$menuActiveBg:#F8F9FD;      // 激活的父菜单背景色
+$subMenuActiveText:#577df4; // 激活的子菜单文字色
+$subMenuActiveBg:#F8F9FD;   // 激活的子菜单背景
+// $subMenuActiveText:#0968EC; // 激活的子菜单文字色
+$menuBg:#FFFFFF;            // 父菜单背景
+$menuHover:#EEF1F5;         // 父菜单悬浮的背景
+$subMenuBg:#FFFFFF;         // 子菜单背景
+$subMenuHover:#EEF1F5;      // 子菜单悬浮的背景
+// 图表选色
+$primaryLine:#577df4;  // 线条色-基础色
+$primaryThinLine:#99aadd;  // 线条色-基础色的浅色
+$infoLine:#2db7f5;     // 线条色-信息色
+$uplLine:#0faaa7;      // 线条色-薄荷绿
+$specLine:#50cfcb;     // 线条色-薄荷青
+$cyanLine:#04e7de;     // 线条色-青色
+$greenLine:#a5e8d0;    // 线条色-绿色
+$orangeLine:#FFB22B;   // 线条色-橙色
+$yellowLine:#fbd490;   // 线条色-橙色
+$redLine:#e67689;   // 线条色-红色
+// 各背景色
+$whiteBg:#FFFFFF;  // 白色背景
+$blueBg:#1076FF;   // 蓝色背景
+$blueHover:#2D8CF0;// 悬浮蓝 如面包屑
+$cyanBg:#58A;      // 青色背景
+$orangeBg:#ED4014; // 橙色背景
+$blackBg:#000000;  // 黑色背景
+$pageBg:#EEF1F5;   // 页面背景
+$detailBg:#FFFFFF; // 详情页背景
+$grayBg:#F7F7F8;   // 灰色盒子背景
+$inpDisBg:#F8F8F8; // 输入框禁用背景
+$butDisBg:#ababab; // 按钮(图标)禁用背景
+$disBg:#f7f7f7; // 禁用背景 原
+$disBorder:#dcdee2; // 禁用边框 原
+
+
+
+// 基础色
+$primary:#577df4;    // 基本色
+$primaryThin:#99aadd;    // 基本色
+$primaryDeep:#5164ce;    // 深基本色
+$mediumBlue:#6391F3; // 中蓝色
+$deepBlue:#052fff;   // 深蓝色  
+$steelGray:#DCDEE2;  // 蓝灰色
+$mediumGray:#666666; // 中灰色
+$gray:gray;          // 灰色
+$lightGray:#CCCCCC;  // 淡灰色
+$lightGray1:#C3C2C2; // 淡灰色1
+$lightGray2:#E3E3E3; // 淡灰色2
+$lightGray3:#F9F9F9; // 淡灰色3
+$ashGray:#EFEFEF;    // 淡灰色
+// $stripeTable:#FAFAFA;// 表格条纹灰
+$stripeTable:#F8F9FD;// 表格条纹灰
+$breakGray:#515A6E;  // 面包屑灰
+$lightRed:#FA5151; // 亮红色
+$error:#FF0000;    // 错误-红
+$fault:#ED4014;    // 失败-红（表单校验不通过）
+$edit: #1bb675;    // 编辑-绿
+$info: #2db7f5;    // 详情-青
+$delete:#ed4d67;      // 删除-浅红
+$spec: #50cfcb;     // 特殊按钮-薄荷绿
+$upl: #13B5B1;     // 特殊操作-薄荷蓝
+$cyan:#349dda;     // 青色
+$del:#EE1515;      // 删除-红
+$success:#3DC38C;  // 成功-绿
+$warning:#FF9900;  // 警告-黄
+$blackGray:#0d0f0f;   // 黑色灰
+$deepGray:#1d2727;    // 深灰色
+$bigFont:#333333;     // 大字体色
+$smallFont:#999999;   // 小字体色
+$hoverText:#0db1ae;   // 悬浮文字色
+$whiteText:#FFFFFF;   // 白色文字
+$footnoteText:#b3b1b1; // 脚注颜色
+$inpDisFont:#8D8D8D;  // 输入框禁用字体色
+$disText:#c5c8ce; // 禁用文字色 原
+$ghostPrimary:#f0f3fa;// 幽灵按钮-Primary
+$ghostSpec:#f3fdfd;// 幽灵按钮-spec/upl
+
+//字体大小
+$fontSize64:64px;
+$fontSize24:24px;
+$fontSize20:20px;
+$fontSize18:18px;
+$fontSize16:16px;
+$fontSize15:15px;
+$fontSize14:14px;
+$fontSize12:12px;
+$fontSize10:10px;
+$fontSize8:8px;
+$fontSize0:0px;
+
+$sideBarWidth: 13.125rem;
+
+// @import '@/styles/variables.scss';
+// import variable from "@/styles/variable.scss";
+// 上述是CSS导入 和 JS导入本文件
+// 导出JS使用
+:export {
+  // 菜单色
+  menuText: $menuText;
+  menuActiveText: $menuActiveText;
+  subMenuActiveText: $subMenuActiveText;
+  menuBg: $menuBg;
+  menuHover: $menuHover;
+  subMenuBg: $subMenuBg;
+  subMenuHover: $subMenuHover;
+  sideBarWidth: $sideBarWidth;
+  // 首页图表色
+  primaryLine: $primaryLine;
+  primaryThinLine: $primaryThinLine;
+  infoLine: $infoLine;
+  uplLine: $uplLine;
+  specLine: $specLine;
+  cyanLine: $cyanLine;
+  greenLine: $greenLine;
+  orangeLine: $orangeLine;
+  yellowLine: $yellowLine;
+  redLine: $redLine;
+  // 各背景色
+  whiteBg: $whiteBg;
+  blueBg: $blueBg;
+  blueHover: $blueHover;
+  cyanBg: $cyanBg;
+  orangeBg: $orangeBg;
+  blackBg: $blackBg;
+  pageBg: $pageBg;
+  detailBg: $detailBg;
+  inpDisBg: $inpDisBg;
+  grayBg: $grayBg;
+  butDisBg: $butDisBg;
+  disBg: $disBg;
+  disBorder: $disBorder;
+  // 基础色
+  primary: $primary;
+  primaryThin: $primaryThin;
+  primaryDeep: $primaryDeep;
+  mediumBlue: $mediumBlue;
+  deepBlue: $deepBlue;
+  steelGray: $steelGray;
+  mediumGray: $mediumGray;
+  lightGray: $lightGray;
+  lightGray1: $lightGray1;
+  lightGray2: $lightGray2;
+  lightGray3: $lightGray3;
+  stripeTable: $stripeTable;
+  breakGray: $breakGray;
+  ashGray: $ashGray;
+  lightRed: $lightRed;
+  error: $error;
+  fault: $fault;
+  edit: $edit;
+  info: $info;
+  delete: $delete;
+  spec: $spec;
+  upl: $upl;
+  del: $del;
+  success: $success;
+  blackGray: $blackGray;
+  deepGray: $deepGray;
+  bigFont: $bigFont;
+  smallFont: $smallFont;
+  hoverText: $hoverText;
+  whiteText: $whiteText;
+  inpDisFont: $inpDisFont;
+  disText: $disText;
+  ghostPrimary: $ghostPrimary;
+  // 文字大小
+  fontSize64: $fontSize64;
+  fontSize24: $fontSize24;
+  fontSize20: $fontSize20;
+  fontSize18: $fontSize18;
+  fontSize16: $fontSize16;
+  fontSize15: $fontSize15;
+  fontSize14: $fontSize14;
+  fontSize12: $fontSize12;
+  fontSize10: $fontSize10;
+  fontSize8: $fontSize8;
+  fontSize0: $fontSize0;
+
+}

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>状态码页面</title>
+    <script th:src="@{js/highcharts.js}" type="application/javascript"></script>
+    <script th:src="@{js/vue.js}" type="application/javascript"></script>
+    <script th:src="@{js/exporting.js}" type="application/javascript"></script>
+    <script src="https://code.hcharts.cn/plugins/zh_cn.js" type="application/javascript"></script>
+    <!-- 引入样式 -->
+    <!--    <link rel="stylesheet" th:href="@{/element/theme/index.css}"/>-->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <!--    <script th:src="@{/element/index.js}" type="application/javascript"></script>-->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+    <script src="./js/axios.js"></script>
+
+</head>
+<body>
+<div id="app" style="width: 80%;margin-left: 200px;height: 100%;">
+    <el-tabs v-model="first" @tab-click="handleClick">
+        <el-tab-pane label="状态码" name="first">
+            <el-form :inline="true" :model="codeForm" class="demo-form-inline">
+                <el-form-item label="状态码">
+                    <el-input v-model="codeForm.code" placeholder="状态码"></el-input>
+                </el-form-item>
+                <el-form-item label="租户">
+                    <el-select v-model="codeForm.tenantId" placeholder="租户">
+                        <el-option v-for="(item,index) in tenants" :label="item.tenantName"
+                                   :value="item.tenantId"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="codeQuery">查询</el-button>
+                    <el-button type="success" @click="saveCodedia = true">新增</el-button>
+                </el-form-item>
+            </el-form>
+            <el-table
+                    :data="codes"
+                    border
+                    style="width: 100%">
+                <el-table-column
+                        prop="code"
+                        label="状态码"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="message"
+                        label="返回值"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="tenantName"
+                        label="租户"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="tenantId"
+                        label="租户Id"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="prototype"
+                        label="原型">
+                </el-table-column>
+                <el-table-column
+                        fixed="right"
+                        label="操作"
+                        width="100">
+                    <template slot-scope="scope">
+                        <el-button @click="deleteCode(scope.row.code)" type="text" size="small">删除</el-button>
+                        <el-button type="text" size="small" @click="opensavecode(scope.row)" >更新</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+
+            <el-pagination
+                    background
+                    :page-size="codeForm.size"
+                    :current-page="codeForm.index"
+                    layout="prev, pager, next"
+                    :total="codeForm.total">
+            </el-pagination>
+
+        </el-tab-pane>
+        <el-tab-pane label="租户管理" name="second">
+            <el-button type="success" @click="saveTenantdia = true">新增</el-button>
+            <el-table
+                    :data="tenants"
+                    border
+                    style="width: 100%">
+                <el-table-column
+                        prop="tenantId"
+                        label="租户Id"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="tenantName"
+                        label="租户"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        fixed="right"
+                        label="操作"
+                        width="100">
+                    <template slot-scope="scope">
+                        <el-button @click="deleteTenant(scope.row.tenantId)" type="text" size="small">删除</el-button>
+                        <el-button type="text" size="small" @click="opensavetenant(scope.row)" >更新</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            
+        </el-tab-pane>
+        <el-tab-pane label="引擎模式" name="third">
+        </el-tab-pane>
+    </el-tabs>
+
+    <el-dialog title="状态码" @close="closeCode" :visible.sync="saveCodedia">
+        <el-form :inline="true" :model="saveCode" class="demo-form-inline">
+            <el-form-item label="状态码">
+                <el-input v-model="saveCode.code" placeholder="状态码"></el-input>
+            </el-form-item>
+            <el-form-item label="租户">
+                <el-select v-model="saveCode.tenantId" placeholder="租户">
+                    <el-option v-for="(item,index) in tenants" :label="item.tenantName"
+                               :value="item.tenantId"></el-option>
+                </el-select>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="closeCode">取 消</el-button>
+            <el-button type="primary" @click="saveCodeM">保存</el-button>
+        </div>
+    </el-dialog>
+    <el-dialog title="状态码" @close="closeTenant" :visible.sync="saveTenantdia">
+        <el-form :inline="true" :model="saveTenant" class="demo-form-inline">
+            <el-form-item label="租户名">
+                <el-input v-model="saveTenant.tenantName" placeholder="租户名"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="closeTenant">取 消</el-button>
+            <el-button type="primary" @click="saveTenant">保存</el-button>
+        </div>
+    </el-dialog>
+</div>
+</body>
+</html>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data() {
+            return {
+                first:"first",
+                codeForm: {
+                    code: "",
+                    tenantId: "",
+                    index: 1,
+                    size: 10,
+                    total: 0
+                },
+                saveCode:{
+                    code: "",
+                    tenantId: ""
+                },
+                saveTenant:{
+                    tenantName: "",
+                    tenantId: ""
+                },
+                tenants: [],
+                codes: [],
+                saveCodedia:false,
+                saveTenantdia:false
+            }
+        },
+        mounted: function () {
+            this.codeQuery();
+            this.getTenant();
+        },
+        methods: {
+            deleteTenant(id){
+                axios({
+                    url: "/resultcode/deletetenant",
+                    params: {
+                        id: id,
+                    }
+                }).then((res) => {
+                    var data = res.data;
+                    if (data.status) {
+                        this.$message.success("删除成功");
+                    } else {
+                        this.$message.error(data.message);
+                    }
+                })
+            },
+            codeQuery() {
+                axios({
+                    url: "/resultcode/list",
+                    params: {
+                        code: this.codeForm.code,
+                        tenantId: this.codeForm.tenantId,
+                        index: this.codeForm.index,
+                        size: this.codeForm.size
+                    }
+                }).then((res) => {
+                    var data = res.data;
+                    if (data.status) {
+                        this.codes = data.data.records;
+                        this.codeForm.total = data.data.size;
+                    } else {
+                        this.$message.error(data.message);
+                    }
+                })
+            },
+            deleteCode(code){
+                axios({
+                    url: "/resultcode/delete",
+                    params: {
+                        code: code,
+                    }
+                }).then((res) => {
+                    var data = res.data;
+                    if (data.status) {
+                        this.$message.success("删除成功");
+                    } else {
+                        this.$message.error(data.message);
+                    }
+                })
+            },
+            opensavecode(code){
+                this.saveCode.code = code.code;
+                this.saveCode.tenantId = code.tenantId
+                this.saveCodedia = true;
+            },
+            opensavetenant(tenant){
+                this.saveTenant.tenantName = tenant.tentName,
+                this.saveTenant.tenantId = tenant.tenantId
+                this.saveTenantdia = true;
+            },
+            saveCodeM(){
+                axios({
+                    url: "/resultcode/byid",
+                    params: {
+                        code: this.saveCode.code,
+                        tenantId: this.saveCode.tenantId,
+                    }
+                }).then((res) => {
+                    var data = res.data;
+                    if (data.status) {
+                        if(data.data==null){
+                            axios({
+                                method:"POST",
+                                url: "/resultcode/save",
+                                data: {
+                                    code: this.saveCode.code,
+                                    tenantId: this.saveCode.tenantId
+                                }
+                            }).then((res) => {
+                                var data = res.data;
+                                if (data.status) {
+                                    this.$message.success("更新成功");
+                                } else {
+                                    this.$message.error(data.message);
+                                }
+                            })
+                        }else{
+                            this.$message.error("状态码已存在");
+                        }
+                    } else {
+                        this.$message.error(data.message);
+                    }
+                })
+            },
+            getTenant(){
+                axios({
+                    url: "/resultcode/tenant",
+                }).then((res) => {
+                    var data = res.data;
+                    if (data.status) {
+                        this.tenants = data.data;
+                    } else {
+                        this.$message.error(data.message);
+                    }
+                })
+            },
+            saveTenant(){
+                axios({
+                    url: "/resultcode/tenantname",
+                    params: {
+                        tenantName: this.saveTenant.tenantId,
+                    }
+                }).then((res) => {
+                    var data = res.data;
+                    if (data.status) {
+                        if(data.data==null){
+                            axios({
+                                method: "POST",
+                                url: "/resultcode/tenantsave",
+                                data: {
+                                    tenantName: this.saveTenant.tenantName,
+                                    tenantId: this.saveTenant.tenantId
+                                }
+                            }).then((res) => {
+                                var data = res.data;
+                                if (data.status) {
+                                    this.$message.success("更新成功");
+                                } else {
+                                    this.$message.error(data.message);
+                                }
+                            })
+                        }else{
+                            this.$message.error("状态码已存在");
+                        }
+                    } else {
+                        this.$message.error(data.message);
+                    }
+                })
+            },
+            closeCode(){
+                this.saveCodedia = false;
+                this.saveCode.code = "";
+                this.saveCode.tenantId = ""
+            },
+            closeTenant(){
+                this.saveTenantdia = false;
+                this.saveTenant.tenantId = "";
+                this.saveTenant.tenantName = ""
+            },
+            handleClick() {
+
+            }
+        }
+    })
+</script>
+<style>
+
+</style>

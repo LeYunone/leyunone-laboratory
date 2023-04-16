@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leyunone.laboratory.web.project.resultcode.dao.mapper.CodeMapper">
+    
+    <select id="selectCon" resultType="com.leyunone.laboratory.web.project.resultcode.bean.Code"
+            parameterType="com.leyunone.laboratory.web.project.resultcode.bean.CodeQuery">
+        SELECT c.code,c.tenant_id,c.message,c.prototype,t.tenant_name FROM t_code c LEFT JOIN t_tenant t ON c.tenant_id = t.tenant_id
+        WHERE 1 = 1 
+        <if test="con.code!=null and con.code!=''">
+            c.code LIKE concat('%',#{con.code},'%')
+        </if>
+        <if test="con.tenantId!=null and con.tenantId!=''">
+            c.tenant_id = #{con.tenantId}
+        </if>
+    </select>
+</mapper>
