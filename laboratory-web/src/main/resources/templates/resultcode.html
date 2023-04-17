@@ -32,8 +32,9 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="codeQuery">查询</el-button>
+                    <el-button type="primary" @click="getCode">查询</el-button>
                     <el-button type="success" @click="saveCodedia = true">新增</el-button>
+                    <el-button type="success" @click="codefiledia = true">导入</el-button>
                 </el-form-item>
             </el-form>
             <el-table
@@ -41,24 +42,24 @@
                     border
                     style="width: 100%">
                 <el-table-column
+                        prop="codeId"
+                        label="编号">
+                </el-table-column>
+                <el-table-column
                         prop="code"
-                        label="状态码"
-                        width="180">
+                        label="状态码">
                 </el-table-column>
                 <el-table-column
                         prop="message"
-                        label="返回值"
-                        width="180">
+                        label="返回值">
                 </el-table-column>
                 <el-table-column
                         prop="tenantName"
-                        label="租户"
-                        width="180">
+                        label="租户">
                 </el-table-column>
                 <el-table-column
                         prop="tenantId"
-                        label="租户Id"
-                        width="180">
+                        label="租户Id">
                 </el-table-column>
                 <el-table-column
                         prop="prototype"
@@ -66,11 +67,10 @@
                 </el-table-column>
                 <el-table-column
                         fixed="right"
-                        label="操作"
-                        width="100">
+                        label="操作">
                     <template slot-scope="scope">
                         <el-button @click="deleteCode(scope.row.code)" type="text" size="small">删除</el-button>
-                        <el-button type="text" size="small" @click="opensavecode(scope.row)" >更新</el-button>
+                        <el-button type="text" size="small" @click="opensavecode(scope.row)">更新</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -80,6 +80,7 @@
                     :page-size="codeForm.size"
                     :current-page="codeForm.index"
                     layout="prev, pager, next"
+                    @current-change="codePage"
                     :total="codeForm.total">
             </el-pagination>
 
@@ -93,24 +94,23 @@
                 <el-table-column
                         prop="tenantId"
                         label="租户Id"
-                        width="180">
+                >
                 </el-table-column>
                 <el-table-column
                         prop="tenantName"
                         label="租户"
-                        width="180">
+                >
                 </el-table-column>
                 <el-table-column
                         fixed="right"
-                        label="操作"
-                        width="100">
+                        label="操作">
                     <template slot-scope="scope">
                         <el-button @click="deleteTenant(scope.row.tenantId)" type="text" size="small">删除</el-button>
-                        <el-button type="text" size="small" @click="opensavetenant(scope.row)" >更新</el-button>
+                        <el-button type="text" size="small" @click="opensavetenant(scope.row)">更新</el-button>
                     </template>
                 </el-table-column>
             </el-table>
-            
+
         </el-tab-pane>
         <el-tab-pane label="引擎模式" name="third">
         </el-tab-pane>
@@ -120,6 +120,9 @@
         <el-form :inline="true" :model="saveCode" class="demo-form-inline">
             <el-form-item label="状态码">
                 <el-input v-model="saveCode.code" placeholder="状态码"></el-input>
+            </el-form-item>
+            <el-form-item label="返回值">
+                <el-input v-model="saveCode.message" placeholder="返回值"></el-input>
             </el-form-item>
             <el-form-item label="租户">
                 <el-select v-model="saveCode.tenantId" placeholder="租户">
@@ -141,9 +144,121 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="closeTenant">取 消</el-button>
-            <el-button type="primary" @click="saveTenant">保存</el-button>
+            <el-button type="primary" @click="saveTenantM">保存</el-button>
         </div>
     </el-dialog>
+    <el-dialog title="状态码文件" :visible.sync="codefiledia">
+        <el-form :inline="true" :model="codeFile" class="demo-form-inline">
+            <el-form-item label="租户">
+                <el-select v-model="codeFile.tenantId" placeholder="租户">
+                    <el-option v-for="(item,index) in tenants" :label="item.tenantName"
+                               :value="item.tenantId"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="模式：">
+                <el-select v-model="codeFile.model" placeholder="租户">
+                    <el-option label="新增模式" value="1"></el-option>
+                    <el-option label="覆盖模式" value="2"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item>
+                <el-upload
+                        ref="upload"
+                        action=""
+                        class="upload-demo"
+                        :http-request="httpRequest"
+                        :multiple="false"
+                        :limit="1"
+                        :auto-upload="false"
+                        :file-list="codeFile.file">
+                    <el-button size="small" type="primary">选择文件</el-button>
+                </el-upload>
+            </el-form-item>
+
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="codefiledia = false">取 消</el-button>
+            <el-button type="primary" @click="submitFile">保存</el-button>
+        </div>
+    </el-dialog>
+    <el-dialog
+            title="导入结果"
+            :visible.sync="importdia"
+            width="80%">
+        <el-row :gutter="15">
+            <el-col :span="12">
+                <span style="color: greenyellow">成功导入</span>
+                <el-table
+                        style="width: 64%"
+                        :data="importresult.successList"
+                        border
+                        size="small"
+                        show-header="false"
+                        height="400">
+                    <el-table-column
+                            prop="code"
+                            label="状态码">
+                    </el-table-column>
+                    <el-table-column
+                            prop="message"
+                            label="返回值">
+                    </el-table-column>
+                </el-table>
+            </el-col>
+            <el-col :span="12">
+                <span style="color: red">失败导入</span>
+                <el-table
+                        :data="importresult.errorList"
+                        border
+                        style="width: 64%"
+                        size="small"
+                        show-header="false"
+                        height="400">
+                    <el-table-column
+                            prop="code"
+                            label="状态码">
+                    </el-table-column>
+                    <el-table-column
+                            prop="message"
+                            label="返回值">
+                    </el-table-column>
+                </el-table>
+            </el-col>
+        </el-row>
+        <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="importdia = false">确 定</el-button>
+        </span>
+    </el-dialog>
+
+    <el-drawer
+            size="500px"
+            :visible.sync="search"
+            direction="ttb"
+    >
+        <div class="search-from">
+            <el-input @input="searchKey(code)" @keyup.enter.native="searchKey(code)" v-model="searchFrom.code" type="search"
+                      placeholder="搜索..."/>
+        </div>
+        <div class="search-content">
+            <ol class="search-ol">
+                <li class="search-li" v-for="(item,index) in searchFrom.searchList">
+                    <a target="_blank" class="search-a"> <span
+                            v-html=item.title></span></a>
+                </li>
+            </ol>
+        </div>
+
+        <div class="block">
+            <el-pagination
+                    layout="prev, pager, next"
+                    :current-page="searchFrom.index"
+                    :page-size="searchFrom.size"
+                    :total="searchFrom.total"
+                    @current-change="searchPage"
+            >
+            </el-pagination>
+        </div>
+    </el-drawer>
 </div>
 </body>
 </html>
@@ -152,7 +267,15 @@
         el: '#app',
         data() {
             return {
-                first:"first",
+                searchFrom:{
+                    index:1,
+                    size:10,
+                    total:0,
+                    code:"",
+                    searchList:[]
+                },
+                search: false,
+                first: "first",
                 codeForm: {
                     code: "",
                     tenantId: "",
@@ -160,28 +283,103 @@
                     size: 10,
                     total: 0
                 },
-                saveCode:{
-                    code: "",
-                    tenantId: ""
+                codeFile: {
+                    tenantId: "",
+                    model: 1
                 },
-                saveTenant:{
+                importresult: {
+                    successList: [],
+                    errorList: []
+                },
+                saveCode: {
+                    codeId: "",
+                    code: "",
+                    tenantId: "",
+                    message: ""
+                },
+                saveTenant: {
                     tenantName: "",
                     tenantId: ""
                 },
                 tenants: [],
                 codes: [],
-                saveCodedia:false,
-                saveTenantdia:false
+                saveCodedia: false,
+                saveTenantdia: false,
+                codefiledia: false,
+                importdia: false
             }
         },
         mounted: function () {
-            this.codeQuery();
+            this.getCode();
             this.getTenant();
         },
         methods: {
-            deleteTenant(id){
+            searchKey(code){
+                this.searchFrom.index=1;
+                this.searchFrom.size=6;
+                this.searchFrom.total=0;
+                this.searchM(code);
+            },
+            searchPage(val){
+                this.searchFrom.index = val;
+                this.searchM(this.searchFrom.code);
+            },
+            searchM(code){
+                if(code.length!==0){
+                    axios({
+                        url:"/resultcode/search",
+                        params:{
+                            code:code,
+                            index:this.searchFrom.index,
+                            size:this.searchFrom.size
+                        },
+                    }).then((res) => {
+                        var data=res.data;
+                        if(data.status){
+                            this.searchFrom.searchList=data.data.listData;
+                            this.searchFrom.total=data.data.totole;
+                        }else{
+                            ElMessage.error(data.message);
+                        }
+                    })
+                }
+            },
+            httpRequest(param) {
+                //把上传的文件赋值给data属性的file
+                this.codeFile.file = param.file;
+            },
+            submitFile() {
+                //注意执行submit方法后，他会触发upload组件中的 http-request
+                this.$refs.upload.submit()
+                // 新建form表单
+                const formData = new FormData();
+                formData.append("tenantId", this.codeFile.tenantId);
+                formData.append("file", this.codeFile.file);
+                formData.append("model", this.codeFile.model);
+                let config = {
+                    header: {
+                        "Content-Type": "multipart/form-data"
+                    }
+                }
                 axios({
-                    url: "/resultcode/deletetenant",
+                    method: "POST",
+                    url: "/resultcode/import",
+                    data: formData
+                }).then((res) => {
+                    var data = res.data;
+                    if (data.status) {
+                        this.importresult.errorList = data.data.errorList;
+                        this.importresult.successList = data.data.successList;
+                        this.importdia = true;
+                        this.codefiledia = false;
+                    } else {
+                        this.$message.error(data.message);
+                    }
+                })
+            },
+            deleteTenant(id) {
+                axios({
+                    url: "/resultcode/tenantdelete",
                     params: {
                         id: id,
                     }
@@ -194,7 +392,11 @@
                     }
                 })
             },
-            codeQuery() {
+            codePage(val) {
+                this.codeForm.index = val;
+                this.getCode();
+            },
+            getCode() {
                 axios({
                     url: "/resultcode/list",
                     params: {
@@ -207,13 +409,14 @@
                     var data = res.data;
                     if (data.status) {
                         this.codes = data.data.records;
-                        this.codeForm.total = data.data.size;
+                        this.codeForm.total = data.data.total;
+                        console.log(this.codeForm.total)
                     } else {
                         this.$message.error(data.message);
                     }
                 })
             },
-            deleteCode(code){
+            deleteCode(code) {
                 axios({
                     url: "/resultcode/delete",
                     params: {
@@ -228,51 +431,40 @@
                     }
                 })
             },
-            opensavecode(code){
+            opensavecode(code) {
+                this.saveCode.codeId = code.codeId;
                 this.saveCode.code = code.code;
                 this.saveCode.tenantId = code.tenantId
+                this.saveCode.message = code.message;
                 this.saveCodedia = true;
             },
-            opensavetenant(tenant){
+            opensavetenant(tenant) {
                 this.saveTenant.tenantName = tenant.tentName,
-                this.saveTenant.tenantId = tenant.tenantId
+                    this.saveTenant.tenantId = tenant.tenantId
                 this.saveTenantdia = true;
             },
-            saveCodeM(){
+            saveCodeM() {
                 axios({
-                    url: "/resultcode/byid",
-                    params: {
+                    method: "POST",
+                    url: "/resultcode/save",
+                    data: {
                         code: this.saveCode.code,
                         tenantId: this.saveCode.tenantId,
+                        message: this.saveCode.message,
+                        codeId: this.saveCode.codeId
                     }
                 }).then((res) => {
                     var data = res.data;
                     if (data.status) {
-                        if(data.data==null){
-                            axios({
-                                method:"POST",
-                                url: "/resultcode/save",
-                                data: {
-                                    code: this.saveCode.code,
-                                    tenantId: this.saveCode.tenantId
-                                }
-                            }).then((res) => {
-                                var data = res.data;
-                                if (data.status) {
-                                    this.$message.success("更新成功");
-                                } else {
-                                    this.$message.error(data.message);
-                                }
-                            })
-                        }else{
-                            this.$message.error("状态码已存在");
-                        }
+                        this.$message.success("更新成功");
+                        this.getCode();
+                        this.closeCode();
                     } else {
                         this.$message.error(data.message);
                     }
                 })
             },
-            getTenant(){
+            getTenant() {
                 axios({
                     url: "/resultcode/tenant",
                 }).then((res) => {
@@ -284,55 +476,131 @@
                     }
                 })
             },
-            saveTenant(){
+            saveTenantM() {
                 axios({
-                    url: "/resultcode/tenantname",
-                    params: {
-                        tenantName: this.saveTenant.tenantId,
+                    method: "POST",
+                    url: "/resultcode/tenantsave",
+                    data: {
+                        tenantName: this.saveTenant.tenantName,
+                        tenantId: this.saveTenant.tenantId
                     }
                 }).then((res) => {
                     var data = res.data;
                     if (data.status) {
-                        if(data.data==null){
-                            axios({
-                                method: "POST",
-                                url: "/resultcode/tenantsave",
-                                data: {
-                                    tenantName: this.saveTenant.tenantName,
-                                    tenantId: this.saveTenant.tenantId
-                                }
-                            }).then((res) => {
-                                var data = res.data;
-                                if (data.status) {
-                                    this.$message.success("更新成功");
-                                } else {
-                                    this.$message.error(data.message);
-                                }
-                            })
-                        }else{
-                            this.$message.error("状态码已存在");
-                        }
+                        this.$message.success("更新成功");
+                        this.getTenant();
+                        this.closeTenant();
                     } else {
                         this.$message.error(data.message);
                     }
                 })
             },
-            closeCode(){
+            closeCode() {
                 this.saveCodedia = false;
                 this.saveCode.code = "";
-                this.saveCode.tenantId = ""
+                this.saveCode.tenantId = "";
+                this.saveCode.message = "";
             },
-            closeTenant(){
+            closeTenant() {
                 this.saveTenantdia = false;
                 this.saveTenant.tenantId = "";
                 this.saveTenant.tenantName = ""
             },
             handleClick() {
-
+                if(this.first === "third"){
+                    this.search = true;
+                }
             }
         }
     })
 </script>
-<style>
-
+<style scoped>
+    .search-a :hover{
+        color:#DB2828;
+        border-left: 1px dashed #cc0000;
+        border-right: 1px dashed #cc0000;
+    }
+    .search-a{
+        display: block;
+        width: 100%;
+        padding: .5rem;
+        border-bottom: 1px dashed #ccc;
+        font-family: 'Songti SC','Noto Serif SC',STZhongsong,STKaiti,KaiTi,Roboto,serif;
+        font-weight: 700;
+        font-size: 1.2rem;
+        max-width: 800px;
+        transition-property: all;
+        transition-duration: .3s;
+        transition-delay: 0s;
+        color: #0078e7;
+        text-decoration: none;
+        transition: color .1s;
+        text-align: center;
+    }
+    .search-ol{
+        margin: 0;
+        list-style-type: none;
+        padding-inline-start: 0;
+    }
+    .search-li{
+        display: flex;
+        justify-content: center;
+    }
+    .search-from .el-input__inner{
+        height: 65px;
+        background: 0 0;
+        color: #333;
+        font-size: 1.5rem;
+        margin-left: 560px;
+        border-radius: 3rem;
+        padding: 1rem 1.5rem;
+        border: 1px solid #999;
+        box-sizing: border-box;
+        width: 90%;
+        max-width: 800px;
+        font-family: 'Songti SC','Noto Serif SC',STZhongsong,STKaiti,KaiTi,Roboto,serif;
+        font-weight: 900;
+        text-align: center;
+    }
+    .block{
+        text-align: center;
+        margin-top: 20px;
+    }
+    .header {
+        position: relative;
+        box-sizing: border-box;
+        width: 100%;
+        height: 70px;
+        font-size: 22px;
+        color: rgba(0,120,231,.5);
+    }
+    .collapse-btn {
+        float: left;
+        padding: 0 21px;
+        cursor: pointer;
+        line-height: 70px;
+    }
+    .header-right{
+        float: right;
+        padding: 0 50px;
+        cursor: pointer;
+        line-height: 70px;
+    }
+    .header-right a{
+        display: inline-flex;
+        border: none;
+        width: 3rem;
+        height: 3rem;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+    .web-title{
+        text-align: center;
+        line-height: 70px;
+    }
+    .header-right a:hover{
+        background-color: #E5F1FD;
+        color:#1d90e6;
+    }
 </style>

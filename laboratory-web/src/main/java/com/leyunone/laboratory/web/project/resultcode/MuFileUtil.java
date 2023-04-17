@@ -1,5 +1,6 @@
 package com.leyunone.laboratory.web.project.resultcode;
 
+import cn.hutool.core.io.FileUtil;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -37,6 +38,9 @@ public class MuFileUtil {
             ins = multiFile.getInputStream();
             //指定存储路径
             toFile = new File(outFilePath.concat(File.separator).concat(multiFile.getOriginalFilename()));
+            if(!toFile.exists()){
+                FileUtil.touch(toFile);
+            }
             inputStreamToFile(ins, toFile);
             return toFile;
         } catch (Exception e) {

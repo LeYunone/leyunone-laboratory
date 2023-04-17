@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CodeDTO {
+    
+    private Integer codeId;
 
     private String code;
     
@@ -24,4 +26,6 @@ public class CodeDTO {
     private String message;
     
     private MultipartFile file;
+    
+    private Integer model;
 }

@@ -6,6 +6,8 @@ import com.leyunone.laboratory.web.project.resultcode.bean.Code;
 import com.leyunone.laboratory.web.project.resultcode.bean.CodeQuery;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author LeYunone
  * @email 365627310@qq.com
@@ -14,4 +16,6 @@ import org.springframework.stereotype.Service;
 public interface CodeDao extends BaseDao<Code> {
 
     Page<Code> selectList(CodeQuery query);
+    
+    List<Code> selectNoTenant();
 }

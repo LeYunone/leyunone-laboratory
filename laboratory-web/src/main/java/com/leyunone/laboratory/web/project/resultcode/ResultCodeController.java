@@ -1,7 +1,9 @@
 package com.leyunone.laboratory.web.project.resultcode;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.leyunone.laboratory.core.bean.DataResponse;
+import com.leyunone.laboratory.core.util.AssertUtil;
 import com.leyunone.laboratory.web.project.resultcode.bean.*;
 import com.leyunone.laboratory.web.project.resultcode.dao.TenantDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ public class ResultCodeController {
     
     @Autowired
     private ResultCodeService resultCodeService;
+    @Autowired
+    private LuceneService luceneService;
 
     @GetMapping("/list")
     public DataResponse listQuery(CodeQuery query){
@@ -32,8 +36,14 @@ public class ResultCodeController {
      * @return
      */
     @GetMapping("/search")
-    public DataResponse searchQuery(){
-        return DataResponse.of();
+    public DataResponse searchQuery(CodeQuery query){
+        return luceneService.getCodeDir(query.getCode(), query.getIndex(), query.getSize());
+    }
+    
+    @GetMapping("createDir")
+    public DataResponse createDir(){
+        luceneService.createCodeDir(null);
+       return DataResponse.of(); 
     }
 
     /**
@@ -68,8 +78,8 @@ public class ResultCodeController {
      */
     @PostMapping("/import")
     public DataResponse importCode(CodeDTO dto){
-        resultCodeService.importCode(dto);
-        return DataResponse.of();
+        CodeVO codeVO = resultCodeService.importCode(dto);
+        return DataResponse.of(codeVO);
     }
     
     @Autowired
@@ -87,7 +97,7 @@ public class ResultCodeController {
         return DataResponse.of(tenant);
     }
     
-    @PostMapping("/tenantdelete")
+    @GetMapping("/tenantdelete")
     public DataResponse tenantDelete(Integer id){
         tenantDao.deleteById(id);
         return DataResponse.of();
@@ -96,8 +106,21 @@ public class ResultCodeController {
     
     @PostMapping("tenantsave")
     public DataResponse tenantSave(@RequestBody Tenant tenant){
+        Tenant tenant1 = tenantDao.selectOne(Tenant.builder().tenantName(tenant.getTenantName()).build());
+        if(ObjectUtil.isNotNull(tenant1)){
+            boolean is =false;
+            if(ObjectUtil.isNotNull(tenant.getTenantId())){
+                //更新check
+                if(!tenant1.getTenantId().equals(tenant.getTenantId())){
+                    is = true;
+                }
+            }else{
+                is = true;
+            }
+            AssertUtil.isFalse(is,"名字重复");
+        }
+        
         tenantDao.insertOrUpdate(tenant);
         return DataResponse.of();
     }
-    
 }

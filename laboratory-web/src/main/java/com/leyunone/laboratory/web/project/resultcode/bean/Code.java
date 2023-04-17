@@ -1,5 +1,6 @@
 package com.leyunone.laboratory.web.project.resultcode.bean;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -19,8 +20,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Code {
+    
+    @TableId(type = IdType.AUTO)
+    private Integer codeId;
 
-    @TableId("code")
     private String code;
 
     private Integer tenantId;
@@ -31,4 +34,7 @@ public class Code {
     
     @TableField(exist = false)
     private String tenantName;
+    
+    @TableField(exist = false)
+    private String codeHeight;
 }

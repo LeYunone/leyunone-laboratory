@@ -1,5 +1,7 @@
 package com.leyunone.laboratory.web.project.resultcode.bean;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Tenant {
     
+    @TableId(type = IdType.AUTO)
     private Integer tenantId;
     
     private String tenantName;
