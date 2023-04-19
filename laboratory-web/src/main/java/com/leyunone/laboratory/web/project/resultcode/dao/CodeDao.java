@@ -1,10 +1,10 @@
 package com.leyunone.laboratory.web.project.resultcode.dao;
 
+
+
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.leyunone.laboratory.core.dao.BaseDao;
 import com.leyunone.laboratory.web.project.resultcode.bean.Code;
 import com.leyunone.laboratory.web.project.resultcode.bean.CodeQuery;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -18,4 +18,6 @@ public interface CodeDao extends BaseDao<Code> {
     Page<Code> selectList(CodeQuery query);
     
     List<Code> selectNoTenant();
+    
+    Code selectLast(Integer tenantId);
 }

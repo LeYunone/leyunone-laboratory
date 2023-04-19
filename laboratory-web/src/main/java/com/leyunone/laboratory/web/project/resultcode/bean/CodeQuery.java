@@ -10,7 +10,9 @@ import lombok.Data;
 @Data
 public class CodeQuery {
     
-    private String code;
+    private Integer codeId;
+    
+    private Long code;
     
     private Integer tenantId;
     

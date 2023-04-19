@@ -1,4 +1,4 @@
-package com.leyunone.laboratory.web.project.resultcode;
+package com.leyunone.laboratory.web.project.resultcode.controller;
 
 import cn.hutool.core.io.FileUtil;
 import org.springframework.web.multipart.MultipartFile;

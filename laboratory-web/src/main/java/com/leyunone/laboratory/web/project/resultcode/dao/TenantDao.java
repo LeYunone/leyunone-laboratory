@@ -1,6 +1,6 @@
 package com.leyunone.laboratory.web.project.resultcode.dao;
 
-import com.leyunone.laboratory.core.dao.BaseDao;
+
 import com.leyunone.laboratory.web.project.resultcode.bean.Tenant;
 
 /**

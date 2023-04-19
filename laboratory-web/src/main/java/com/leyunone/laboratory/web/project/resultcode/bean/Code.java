@@ -24,7 +24,7 @@ public class Code {
     @TableId(type = IdType.AUTO)
     private Integer codeId;
 
-    private String code;
+    private Long code;
 
     private Integer tenantId;
 

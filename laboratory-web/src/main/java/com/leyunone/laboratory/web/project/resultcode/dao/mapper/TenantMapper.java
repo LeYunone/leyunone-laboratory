@@ -1,5 +1,6 @@
 package com.leyunone.laboratory.web.project.resultcode.dao.mapper;
 
+
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.leyunone.laboratory.web.project.resultcode.bean.Tenant;
 

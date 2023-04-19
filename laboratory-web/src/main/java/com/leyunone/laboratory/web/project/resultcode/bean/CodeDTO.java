@@ -19,7 +19,7 @@ public class CodeDTO {
     
     private Integer codeId;
 
-    private String code;
+    private Long code;
     
     private Integer tenantId;
     

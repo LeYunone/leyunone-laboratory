@@ -13,5 +13,5 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface CodeMapper extends BaseMapper<Code> {
     
-    Page<Code> selectCon(@Param("con") CodeQuery query,Page page);
+    Page<Code> selectCon(@Param("con") CodeQuery query, Page page);
 }

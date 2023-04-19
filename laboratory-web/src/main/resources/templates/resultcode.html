@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>状态码页面</title>
-    <script th:src="@{js/highcharts.js}" type="application/javascript"></script>
-    <script th:src="@{js/vue.js}" type="application/javascript"></script>
-    <script th:src="@{js/exporting.js}" type="application/javascript"></script>
+    <script th:src="@{js/vue.js}" typ="application/javascript"></script>
     <script src="https://code.hcharts.cn/plugins/zh_cn.js" type="application/javascript"></script>
     <!-- 引入样式 -->
     <!--    <link rel="stylesheet" th:href="@{/element/theme/index.css}"/>-->
@@ -69,7 +67,7 @@
                         fixed="right"
                         label="操作">
                     <template slot-scope="scope">
-                        <el-button @click="deleteCode(scope.row.code)" type="text" size="small">删除</el-button>
+                        <el-button @click="deleteCode(scope.row.codeId)" type="text" size="small">删除</el-button>
                         <el-button type="text" size="small" @click="opensavecode(scope.row)">更新</el-button>
                     </template>
                 </el-table-column>
@@ -117,6 +115,7 @@
     </el-tabs>
 
     <el-dialog title="状态码" @close="closeCode" :visible.sync="saveCodedia">
+        <span style="color: red">如果状态码为空，自增1</span>
         <el-form :inline="true" :model="saveCode" class="demo-form-inline">
             <el-form-item label="状态码">
                 <el-input v-model="saveCode.code" placeholder="状态码"></el-input>
@@ -187,7 +186,7 @@
             width="80%">
         <el-row :gutter="15">
             <el-col :span="12">
-                <span style="color: greenyellow">成功导入</span>
+                <span style="color: #adff2f">成功导入</span>
                 <el-table
                         style="width: 64%"
                         :data="importresult.successList"
@@ -231,19 +230,22 @@
     </el-dialog>
 
     <el-drawer
+            id="searchdrawer"
             size="500px"
             :visible.sync="search"
+            @close="closeSearch"
             direction="ttb"
     >
         <div class="search-from">
-            <el-input @input="searchKey(code)" @keyup.enter.native="searchKey(code)" v-model="searchFrom.code" type="search"
+            <el-input @input="searchKey(searchFrom.code)" @keyup.enter.native="searchKey(searchFrom.code)" v-model="searchFrom.code"
+                      type="search"
                       placeholder="搜索..."/>
         </div>
         <div class="search-content">
             <ol class="search-ol">
                 <li class="search-li" v-for="(item,index) in searchFrom.searchList">
-                    <a target="_blank" class="search-a"> <span
-                            v-html=item.title></span></a>
+                    <a class="search-a" @click="openSearchInfo(item.codeId)"> <span
+                            v-html=item.codeHeight></span></a>
                 </li>
             </ol>
         </div>
@@ -267,12 +269,12 @@
         el: '#app',
         data() {
             return {
-                searchFrom:{
-                    index:1,
-                    size:10,
-                    total:0,
-                    code:"",
-                    searchList:[]
+                searchFrom: {
+                    index: 1,
+                    size: 10,
+                    total: 0,
+                    code: "",
+                    searchList: []
                 },
                 search: false,
                 first: "first",
@@ -314,31 +316,53 @@
             this.getTenant();
         },
         methods: {
-            searchKey(code){
-                this.searchFrom.index=1;
-                this.searchFrom.size=6;
-                this.searchFrom.total=0;
+            closeSearch(){
+                this.search = false;
+                this.first = "first";
+            },
+            openSearchInfo(id) {
+                axios({
+                    url: "/resultcode/byid",
+                    params: {codeId: id}
+                }).then((res) => {
+                    var data = res.data;
+                    if (data.status) {
+                        this.saveCode.codeId = data.data.codeId;
+                        this.saveCode.code = data.data.code;
+                        this.saveCode.tenantId = data.data.tenantId;
+                        this.saveCode.message = data.data.message;
+                        this.saveCodedia = true;
+                    } else {
+                        ElMessage.error(data.message);
+                    }
+                })
+            },
+            searchKey(code) {
+                this.searchFrom.index = 1;
+                this.searchFrom.size = 6;
+                this.searchFrom.total = 0;
+                console.log(code);
                 this.searchM(code);
             },
-            searchPage(val){
+            searchPage(val) {
                 this.searchFrom.index = val;
                 this.searchM(this.searchFrom.code);
             },
-            searchM(code){
-                if(code.length!==0){
+            searchM(code) {
+                if (code.length !== 0) {
                     axios({
-                        url:"/resultcode/search",
-                        params:{
-                            code:code,
-                            index:this.searchFrom.index,
-                            size:this.searchFrom.size
+                        url: "/resultcode/search",
+                        params: {
+                            code: code,
+                            index: this.searchFrom.index,
+                            size: this.searchFrom.size
                         },
                     }).then((res) => {
-                        var data=res.data;
-                        if(data.status){
-                            this.searchFrom.searchList=data.data.listData;
-                            this.searchFrom.total=data.data.totole;
-                        }else{
+                        var data = res.data;
+                        if (data.status) {
+                            this.searchFrom.searchList = data.data.listData;
+                            this.searchFrom.total = data.data.totole;
+                        } else {
                             ElMessage.error(data.message);
                         }
                     })
@@ -372,6 +396,7 @@
                         this.importresult.successList = data.data.successList;
                         this.importdia = true;
                         this.codefiledia = false;
+                        this.getCode();
                     } else {
                         this.$message.error(data.message);
                     }
@@ -387,6 +412,7 @@
                     var data = res.data;
                     if (data.status) {
                         this.$message.success("删除成功");
+                        this.getTenant();
                     } else {
                         this.$message.error(data.message);
                     }
@@ -426,6 +452,7 @@
                     var data = res.data;
                     if (data.status) {
                         this.$message.success("删除成功");
+                        this.getCode();
                     } else {
                         this.$message.error(data.message);
                     }
@@ -507,25 +534,47 @@
                 this.saveTenant.tenantName = ""
             },
             handleClick() {
-                if(this.first === "third"){
-                    this.search = true;
+                if (this.first === "third") {
+
+                    const loading = this.$loading({
+                        lock: true,//lock的修改符--默认是false
+                        text: 'Loading',//显示在加载图标下方的加载文案
+                        spinner: 'el-icon-loading',//自定义加载图标类名
+                    });
+                    axios({
+                        url: "/resultcode/createDir",
+                    }).then((res) => {
+                        var data = res.data;
+                        if (data.status) {
+                            this.search = true;
+                        } else {
+                            this.$message.error("引擎加载失败");
+                            this.search = false;
+                            this.first = "first";
+                        }
+                        //延时器
+                        setTimeout(() => {
+                            loading.close();
+                        }, 1500);
+                    })
                 }
             }
         }
     })
 </script>
 <style scoped>
-    .search-a :hover{
-        color:#DB2828;
+    .search-a :hover {
+        color: #DB2828;
         border-left: 1px dashed #cc0000;
         border-right: 1px dashed #cc0000;
     }
-    .search-a{
+
+    .search-a {
         display: block;
         width: 100%;
         padding: .5rem;
         border-bottom: 1px dashed #ccc;
-        font-family: 'Songti SC','Noto Serif SC',STZhongsong,STKaiti,KaiTi,Roboto,serif;
+        font-family: 'Songti SC', 'Noto Serif SC', STZhongsong, STKaiti, KaiTi, Roboto, serif;
         font-weight: 700;
         font-size: 1.2rem;
         max-width: 800px;
@@ -537,16 +586,19 @@
         transition: color .1s;
         text-align: center;
     }
-    .search-ol{
+
+    .search-ol {
         margin: 0;
         list-style-type: none;
         padding-inline-start: 0;
     }
-    .search-li{
+
+    .search-li {
         display: flex;
         justify-content: center;
     }
-    .search-from .el-input__inner{
+
+    .search-from .el-input__inner {
         height: 65px;
         background: 0 0;
         color: #333;
@@ -558,35 +610,40 @@
         box-sizing: border-box;
         width: 90%;
         max-width: 800px;
-        font-family: 'Songti SC','Noto Serif SC',STZhongsong,STKaiti,KaiTi,Roboto,serif;
+        font-family: 'Songti SC', 'Noto Serif SC', STZhongsong, STKaiti, KaiTi, Roboto, serif;
         font-weight: 900;
         text-align: center;
     }
-    .block{
+
+    .block {
         text-align: center;
         margin-top: 20px;
     }
+
     .header {
         position: relative;
         box-sizing: border-box;
         width: 100%;
         height: 70px;
         font-size: 22px;
-        color: rgba(0,120,231,.5);
+        color: rgba(0, 120, 231, .5);
     }
+
     .collapse-btn {
         float: left;
         padding: 0 21px;
         cursor: pointer;
         line-height: 70px;
     }
-    .header-right{
+
+    .header-right {
         float: right;
         padding: 0 50px;
         cursor: pointer;
         line-height: 70px;
     }
-    .header-right a{
+
+    .header-right a {
         display: inline-flex;
         border: none;
         width: 3rem;
@@ -595,12 +652,14 @@
         justify-content: center;
         border-radius: 50%;
     }
-    .web-title{
+
+    .web-title {
         text-align: center;
         line-height: 70px;
     }
-    .header-right a:hover{
+
+    .header-right a:hover {
         background-color: #E5F1FD;
-        color:#1d90e6;
+        color: #1d90e6;
     }
 </style>

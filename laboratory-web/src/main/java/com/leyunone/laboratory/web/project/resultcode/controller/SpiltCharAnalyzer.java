@@ -1,4 +1,4 @@
-package com.leyunone.laboratory.web.project.resultcode;
+package com.leyunone.laboratory.web.project.resultcode.controller;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Tokenizer;

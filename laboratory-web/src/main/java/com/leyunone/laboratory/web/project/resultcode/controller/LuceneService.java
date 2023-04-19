@@ -1,9 +1,9 @@
-package com.leyunone.laboratory.web.project.resultcode;
+package com.leyunone.laboratory.web.project.resultcode.controller;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
-import com.leyunone.laboratory.core.bean.DataResponse;
-import com.leyunone.laboratory.core.util.AssertUtil;
 import com.leyunone.laboratory.web.project.resultcode.bean.Code;
+import com.leyunone.laboratory.web.project.resultcode.bean.DataResponse;
 import com.leyunone.laboratory.web.project.resultcode.bean.LuceneCO;
 import com.leyunone.laboratory.web.project.resultcode.dao.CodeDao;
 import org.apache.lucene.analysis.Analyzer;
@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.file.FileSystems;
@@ -47,8 +48,18 @@ public class LuceneService {
     @Autowired
     private CodeDao codeDao;
     
-    private static final String DIR_SAVE_PATH  ="/temp/dir";
+    private static final String DIR_SAVE_PATH  ="/opt/temp/dir";
 
+    /**
+     * 情况索引库
+     */
+    public void clearDir(){
+        File file = new File(DIR_SAVE_PATH);
+        if(file.exists()){
+            FileUtil.del(file);
+        }
+    }
+    
     /**
      * 创建索引库
      * @param codes
@@ -73,7 +84,7 @@ public class LuceneService {
                 Document document = new Document();
                 //记录标题和id即可
                 Field id = new StringField("id", String.valueOf(code.getCodeId()), Field.Store.YES);
-                Field title = new TextField("title", code.getCode(), Field.Store.YES);
+                Field title = new TextField("title", code.getCode()+":  ["+code.getMessage()+"]", Field.Store.YES);
                 document.add(id);
                 document.add(title);
                 documents.add(document);
@@ -111,7 +122,7 @@ public class LuceneService {
         try {
             Analyzer analyzer = new SpiltCharAnalyzer();
             //关键词
-            QueryParser qp = new QueryParser("code", analyzer);
+            QueryParser qp = new QueryParser("title", analyzer);
             if (StrUtil.isBlank(key)) {
                 key = "";
             }
@@ -145,11 +156,12 @@ public class LuceneService {
             for (ScoreDoc scoreDoc : topDocs.scoreDocs) {
                 //获得对应的文档
                 Document doc = indexSearcher.doc(scoreDoc.doc);
-                String code = doc.get("code");
-                TokenStream tokenStream = analyzer.tokenStream("code", new StringReader(code));
-                result.add(Code.builder().codeId(Integer.parseInt(doc.get("id"))).codeHeight(highlighter.getBestFragment(tokenStream, code)).build());
+                String title = doc.get("title");
+                TokenStream tokenStream = analyzer.tokenStream("title", new StringReader(title));
+                result.add(Code.builder().codeId(Integer.parseInt(doc.get("id"))).codeHeight(highlighter.getBestFragment(tokenStream, title)).build());
             }
         } catch (Exception e) {
+            e.printStackTrace();
             AssertUtil.isTrue(error);
         } finally {
             if (indexReader != null) {

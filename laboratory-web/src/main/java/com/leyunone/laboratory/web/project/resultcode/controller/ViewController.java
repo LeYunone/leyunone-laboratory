@@ -1,4 +1,4 @@
-package com.leyunone.laboratory.web;
+package com.leyunone.laboratory.web.project.resultcode.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
