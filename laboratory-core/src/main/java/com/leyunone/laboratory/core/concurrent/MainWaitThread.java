@@ -1,12 +1,11 @@
 package com.leyunone.laboratory.core.concurrent;
 
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.io.IOException;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicStampedReference;
+import java.util.concurrent.locks.LockSupport;
 
 /**
  * 主线程等待子线程任务完成 案例
@@ -19,13 +18,71 @@ public class MainWaitThread {
 
     volatile int state =0;
     
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws Exception {
 //        joinThread();
-        countlatchdown();
+//        countlatchdown();
+//          waitFlag();
+        completableFuture();
+//        threadPoolWait();
+    }
+    
+    public static void threadPoolWait() throws Exception{
+        ExecutorService executorService = Executors.newFixedThreadPool(4);
+        for (int i = 0; i <= 3; i++) {
+            final int count = i;
+            executorService.submit(() -> {
+                        try {
+                            TimeUnit.SECONDS.sleep(count);
+                            System.out.println("子线程任务"+count);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+            );
+        }
+        boolean b = executorService.awaitTermination(10, TimeUnit.SECONDS);
+        System.out.println("主线程完成"+b);
+    }
+    
+    public static void completableFuture() throws ExecutionException, InterruptedException, IOException {
+        CompletableFuture<String> thread1 = CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(2000L);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "子线程任务一";
+        });
+        CompletableFuture<String> thread2 = CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(4000L);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "子线程任务二";
+        });
+        System.out.println(thread1.get());
+        System.out.println(thread2.get());
+        System.out.println("主线程任务");
     }
     
     public static void waitFlag() {
-        
+        AtomicInteger integer = new AtomicInteger(0);
+        Thread thread = new Thread(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(5);
+                System.out.println("子线程任务");
+                integer.addAndGet(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        thread.start();
+        LockSupport.park();
+        while(integer.get()!=1 ){
+        }
+        System.out.println("主线程任务");
+
     }
 
     public static void countlatchdown() throws InterruptedException {
