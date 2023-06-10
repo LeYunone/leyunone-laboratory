@@ -1,4 +1,4 @@
-package com.leyunone.laboratory.core.design.Strategy;
+package com.leyunone.laboratory.core.design.strategy.easy;
 
 import org.springframework.stereotype.Service;
 
@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
  * @email 365627310@qq.com
  * @date 2022-09-08
  */
-//@Service("service2")
-public class Service2 implements BaseService {
+@Service("service3")
+public class Service3 implements BaseService {
     @Override
     public String test(){
         return "test1";

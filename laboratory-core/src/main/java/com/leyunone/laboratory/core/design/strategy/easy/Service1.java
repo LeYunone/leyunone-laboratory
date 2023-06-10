@@ -1,6 +1,4 @@
-package com.leyunone.laboratory.core.design.Strategy;
-
-import org.springframework.stereotype.Service;
+package com.leyunone.laboratory.core.design.strategy.easy;
 
 /**
  * @author LeYuna

@@ -1,4 +1,4 @@
-package com.leyunone.laboratory.core.design.Strategy;
+package com.leyunone.laboratory.core.design.strategy.easy;
 
 /**
  * @author LeYuna

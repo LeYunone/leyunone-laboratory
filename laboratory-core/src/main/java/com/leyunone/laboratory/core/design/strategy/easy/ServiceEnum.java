@@ -1,4 +1,4 @@
-package com.leyunone.laboratory.core.design.Strategy;
+package com.leyunone.laboratory.core.design.strategy.easy;
 
 public enum ServiceEnum {
     SERVICE1(1, "业务描述", "service1"),

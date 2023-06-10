@@ -1,4 +1,4 @@
-package com.leyunone.laboratory.core.design.Strategy;
+package com.leyunone.laboratory.core.design.strategy.easy;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
