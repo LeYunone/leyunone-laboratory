@@ -1,0 +1,3 @@
+images = com.leyunone.laboratory.core.tool.oss.ImageOssService
+files = com.leyunone.laboratory.core.tool.oss.FileOssService
+com.leyunone.laboratory.core.tool.oss.OssAspect
