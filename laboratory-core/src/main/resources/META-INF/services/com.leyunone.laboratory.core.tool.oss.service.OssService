@@ -1,0 +1,5 @@
+image = com.leyunone.laboratory.core.tool.oss.pattern.ImagePatternService
+file = com.leyunone.laboratory.core.tool.oss.pattern.FilePatternService
+ota = com.leyunone.laboratory.core.tool.oss.pattern.OtaPatternService
+product-theme = com.leyunone.laboratory.core.tool.oss.pattern.ProductThemePatternService
+com.leyunone.laboratory.core.tool.oss.boost.OssAspect

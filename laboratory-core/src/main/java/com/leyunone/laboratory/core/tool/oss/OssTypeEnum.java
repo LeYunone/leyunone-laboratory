@@ -3,15 +3,19 @@ package com.leyunone.laboratory.core.tool.oss;
 /**
  * :)
  *
- * @author LeYunone
+ * @author leyunone
  * @email 365627310@qq.com
  * @date 2023-08-08
  */
 public enum  OssTypeEnum {
     
-    IMAGES("images","图片桶"),
+    IMAGES("image","图片桶"),
     
-    FILE("files","文件桶")
+    FILE("file","文件桶"),
+    
+    OTA("ota","ota文件桶"),
+
+    PRODUCT_THEME("product-theme", "产品主题")
     ;
 
     OssTypeEnum(String type, String desc) {

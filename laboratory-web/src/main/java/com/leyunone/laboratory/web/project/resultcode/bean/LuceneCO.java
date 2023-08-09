@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * @author pengli
+ * @author leyunone
  * @create 2021-09-10 13:51
  *
  * 记录lucene查询结果
