@@ -49,7 +49,7 @@ public class ImagePatternService extends OssAbstractService implements OssServic
      */
     @Override
     public String getFileUrl(String name, Long expireTime) {
-        String imgPath = "https://gvs-image.oss-cn-shenzhen.aliyuncs.com/";
+        String imgPath = "https://my-image.oss-cn-shenzhen.aliyuncs.com/";
         return imgPath + name;
     }
 }

@@ -16,12 +16,12 @@ import java.util.Map;
  * @Author leyunone
  * @Date 2023/8/9 10:07
  */
-public class GVSOssUtils {
+public class MyOssUtils {
 
-    private GVSOssUtils() {
+    private MyOssUtils() {
     }
 
-    private GVSOssUtils(Integer appId,OssTypeEnum ossType) {
+    private MyOssUtils(Integer appId, OssTypeEnum ossType) {
         this.appId = appId;
         this.ossType = ossType;
     }
@@ -30,21 +30,21 @@ public class GVSOssUtils {
 
     private OssTypeEnum ossType;
 
-    public static GVSOssUtils build(OssTypeEnum ossType, Integer appId) {
-        return new GVSOssUtils(appId,ossType);
+    public static MyOssUtils build(OssTypeEnum ossType, Integer appId) {
+        return new MyOssUtils(appId,ossType);
     }
 
-    public static GVSOssUtils build(OssTypeEnum ossType) {
+    public static MyOssUtils build(OssTypeEnum ossType) {
         return build(ossType, null);
     }
 
     public String uploadFile(String name, InputStream stream) {
         ExtensionLoader<FileResolve> extensionLoader = ExtensionLoader.getExtensionLoader(FileResolve.class);
-        FileResolve gvs = extensionLoader.getExtension("gvs");
+        FileResolve my = extensionLoader.getExtension("my");
         Map<String, String> map = new HashMap<>();
         map.put("ossPattern", ossType.getType());
         URL url = new URL("", "", 0, map);
-        return gvs.uploadFile(url, appId, name, stream);
+        return my.uploadFile(url, appId, name, stream);
     }
 
     public String getFileUrl(String name, Long expireTime) {
