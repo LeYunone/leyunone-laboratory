@@ -7,7 +7,7 @@ package com.leyunone.laboratory.core.bytebuddy;
  */
 public class Hello {
     
-    public void testHellow(){
-        
+    public String testHellow(){
+        return "1";
     }
 }
