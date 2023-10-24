@@ -15,14 +15,13 @@ import java.util.List;
  */
 public class UserModel extends AbstractTableModel {
 
-    private String [] columns ;
+    private final String [] columns = new String[] {"编号","姓名","性别","年龄","电话"};
     private List<UserVO> values;
     public UserModel(){
         this.loadData();
     }
 
     private void loadData(){
-        this.columns = new String[] {"编号","姓名","性别","年龄","电话"};
         this.values = CollectionUtil.newArrayList(new UserVO("1","m","男","23","111"),new UserVO(
                 "2","4","男","23","111"),new UserVO("3","mdddd","男","23","111")
                 ,new UserVO("4","dfm","男","23","111"),new UserVO("5","vvvm","男","23","111"));
@@ -36,6 +35,27 @@ public class UserModel extends AbstractTableModel {
     @Override
     public int getColumnCount() {
         return this.columns.length;
+    }
+
+    @Override
+    public String getColumnName(int columnIndex) {
+        return columns[columnIndex];
+    }
+
+    public UserVO getUser(Integer index){
+        return values.get(index);
+    }
+
+    public void addUser(UserVO userVO){
+        this.values.add(userVO);
+    }
+
+    public void updateUser(UserVO userVO){
+        for (UserVO value : values) {
+            if(userVO.getId().equals(value.getId())){
+                value = userVO;
+            }
+        }
     }
 
     @Override

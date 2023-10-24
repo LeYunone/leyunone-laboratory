@@ -20,6 +20,8 @@ public class UserVO {
 
     private String phone;
 
+    public UserVO(){}
+
     public UserVO(String id, String name, String sex, String age, String phone) {
         this.id = id;
         this.name = name;
