@@ -1,5 +1,7 @@
 package com.leyunone.laboratory.core.annotate;
 
+import cn.hutool.core.util.ObjectUtil;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -18,10 +20,10 @@ public class GoTest {
         Method[] methods = clazz.getMethods();
         for(Method method : methods){
             Check annotation = method.getAnnotation(Check.class);
-            if(annotation.required()){
+            if(ObjectUtil.isNotNull(annotation) && annotation.required()){
                 System.out.println("删除校验");
+                method.invoke(test);
             }
-            method.invoke(test);
         }
     }
 }
