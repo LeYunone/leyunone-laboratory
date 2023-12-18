@@ -63,9 +63,19 @@ public class HomeView extends JFrame {
             new UserTableEditView(userModel,null,this);
         });
         editButton.addActionListener(e->{
+            int selectedRow = table.getSelectedRow();
+            if(-1 == selectedRow){
+                JOptionPane.showMessageDialog(this,"未选中任何数据");
+                return;
+            }
             new UserTableEditView(userModel,userModel.getUser(table.getSelectedRow()),this);
         });
         deleteButton.addActionListener(e->{
+            int selectedRow = table.getSelectedRow();
+            if(-1 == selectedRow){
+                JOptionPane.showMessageDialog(this,"未选中任何数据");
+                return;
+            }
 
         });
         buttons.add(addButton);
