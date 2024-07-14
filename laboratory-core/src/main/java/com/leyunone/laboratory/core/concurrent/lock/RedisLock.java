@@ -1,4 +1,4 @@
-package com.leyunone.laboratory.core.concurrent;
+package com.leyunone.laboratory.core.concurrent.lock;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;

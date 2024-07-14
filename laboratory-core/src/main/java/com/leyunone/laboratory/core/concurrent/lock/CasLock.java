@@ -1,4 +1,4 @@
-package com.leyunone.laboratory.core.concurrent;
+package com.leyunone.laboratory.core.concurrent.lock;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;

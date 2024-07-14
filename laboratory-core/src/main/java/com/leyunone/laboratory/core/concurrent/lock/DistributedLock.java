@@ -1,4 +1,4 @@
-package com.leyunone.laboratory.core.concurrent;
+package com.leyunone.laboratory.core.concurrent.lock;
 
 /**
  * @author leyunone
