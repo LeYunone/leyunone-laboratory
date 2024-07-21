@@ -6,6 +6,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.Semaphore;
 
 /**
  * :)
@@ -17,41 +18,39 @@ import java.util.concurrent.CyclicBarrier;
 public class AlternatingOut {
 
     public static void main(String[] args) {
+        twoThread();
     }
     
     public static void twoThread(){
-        CyclicBarrier cyclicBarrier = new CyclicBarrier(2);
-        
+        Semaphore semaphoreA = new Semaphore(1);
+        Semaphore semaphoreB = new Semaphore(0);
+
         new Thread(()->{
-            while (true){
+            int i =0;
+            while (i!=50){
                 try {
-                    Thread.sleep(1000);
+                    semaphoreA.acquire();
                 } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
                 System.out.println("A");
-                try {
-                    cyclicBarrier.await();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (BrokenBarrierException e) {
-                    e.printStackTrace();
-                }
+                semaphoreB.release();
+                i++;
             }
         }).start();
         
         new Thread(()->{
-            while (true){
+            int i =0;
+            while (i!=50){
                 try {
-                    Thread.sleep(1000);
+                    semaphoreB.acquire();
                 } catch (InterruptedException e) {
-                }
-                System.out.println("B");
-                try {
-                    cyclicBarrier.await();
-                } catch (InterruptedException e) {
-                } catch (BrokenBarrierException e) {
                     e.printStackTrace();
                 }
+
+                System.out.println("B");
+                semaphoreA.release();
+                i++;
             }
         }).start();
     }
