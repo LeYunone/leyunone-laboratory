@@ -12,7 +12,7 @@ import java.util.function.Supplier;
  *
  * @author LeYunone
  * @email 365627310@qq.com
- * @date 2024/06/15
+ * @Data 2024/06/15
  */
 public interface CacheManager {
 
@@ -26,7 +26,7 @@ public interface CacheManager {
      * @param value value
      * @return  boolean
      */
-    boolean addDate(String key, String value);
+    boolean addData(String key, String value);
 
     <T> boolean add(String key,T value,Long time);
 
@@ -43,7 +43,7 @@ public interface CacheManager {
      * @param expireTime 设置超时时间 单位s
      * @return boolean
      */
-    boolean addDate(String key, String value, Long expireTime);
+    boolean addData(String key, String value, Long expireTime);
 
     /**
      * 添加string类型
@@ -52,7 +52,7 @@ public interface CacheManager {
      * @param expireTime 设置超时时间 单位ms
      * @return boolean
      */
-    boolean addDate(String key, String value, long expireTime, TimeUnit timeUnit);
+    boolean addData(String key, String value, long expireTime, TimeUnit timeUnit);
 
     /**
      * 新增hash key,在原本的实效时间基础上和设置的的失效时间进行比对来决定最终的失效时间,慎用
@@ -61,14 +61,14 @@ public interface CacheManager {
      * @param value
      * @param expireTime
      */
-    void addDate(String key,String hashKey,Object value,long expireTime);
+    void addData(String key,String hashKey,Object value,long expireTime);
 
     /**
      * 批量添加数据
      * @param maps
      * @param expire
      */
-    void addBatchWithDate(Map<String,String> maps, long expire);
+    void addBatchWithData(Map<String,String> maps, long expire);
 
     /**
      * 改变键值对的value值而不更新过期时间
@@ -76,7 +76,7 @@ public interface CacheManager {
      * @param value value
      * @return
      */
-    boolean updateValueNotExpireTime(String key, String value);
+    boolean upDataValueNotExpireTime(String key, String value);
 
     /**
      * 添加list类型
@@ -85,7 +85,7 @@ public interface CacheManager {
      * @param isLeft 0:先进后出 1:先进先出
      * @return boolean
      */
-    boolean addDate(String key, List value, int isLeft);
+    boolean addData(String key, List value, int isLeft);
 
     /**
      * hash类型
@@ -93,7 +93,7 @@ public interface CacheManager {
      * @param value value
      * @return boolean
      */
-    boolean addDate(String key, HashMap value);
+    boolean addData(String key, HashMap value);
 
     /**
      * 无序set
@@ -101,7 +101,7 @@ public interface CacheManager {
      * @param value value
      * @return return
      */
-    boolean addDate(String key, String... value);
+    boolean addData(String key, String... value);
 
     /**
      * 有序set
@@ -109,7 +109,7 @@ public interface CacheManager {
      * @param value value
      * @return boolean
      */
-    boolean addDate(String key, TreeSet value);
+    boolean addData(String key, TreeSet value);
 
     /**
      * String类型查询
@@ -169,7 +169,7 @@ public interface CacheManager {
      * @param object 数据
      * @return  boolean
      */
-    boolean addDate(String key, String hashKey, Object object);
+    boolean addData(String key, String hashKey, Object object);
 
     /**
      * 删除key
