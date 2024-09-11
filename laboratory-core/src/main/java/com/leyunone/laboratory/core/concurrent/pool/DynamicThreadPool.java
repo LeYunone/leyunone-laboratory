@@ -12,7 +12,7 @@ import java.util.concurrent.*;
  * :)
  * 动态线程池
  *
- * @Author pengli
+ * @Author leyunone
  * @Date 2024/7/22 11:18
  */
 public class DynamicThreadPool {
