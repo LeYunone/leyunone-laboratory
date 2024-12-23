@@ -1,6 +1,12 @@
 package com.leyunone.laboratory.core;
 
 
+import com.google.gson.internal.ConstructorConstructor;
+import sun.misc.Unsafe;
+
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicIntegerArray;
+
 /**
  * :)
  *
@@ -11,6 +17,6 @@ package com.leyunone.laboratory.core;
 public class Test {
 
     public static void main(String[] args) {
-
+        ConstructorConstructor
     }
 }
