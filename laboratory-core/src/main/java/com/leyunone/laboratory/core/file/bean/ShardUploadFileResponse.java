@@ -21,8 +21,13 @@ public class ShardUploadFileResponse {
     private Long totalSize;
 
     private Integer chunkNumber;
-    
+
     private String errorMsg;
+
+    public void buildError(String errorMsg) {
+        setErrorMsg(errorMsg);
+        setSuccess(false);
+    }
 
     public String getErrorMsg() {
         return errorMsg;

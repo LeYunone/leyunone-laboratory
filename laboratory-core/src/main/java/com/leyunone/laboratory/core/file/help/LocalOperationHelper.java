@@ -1,17 +1,13 @@
 package com.leyunone.laboratory.core.file.help;
 
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.util.ObjectUtil;
 import com.leyunone.laboratory.core.file.bean.ShardUploadFileData;
-import com.leyunone.laboratory.core.file.bean.ShardUploadFileResponse;
 import com.leyunone.laboratory.core.file.core.shard.UploadContext;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -50,7 +46,7 @@ public class LocalOperationHelper {
      * @param md5
      * @return
      */
-    private String resoleFileTempPath(String md5) {
+    public String resoleFileTempPath(String md5) {
         String tempPath = fileAddress + "/" + md5 + "/";
         File tempFile = new File(tempPath);
         if (tempFile.exists()) {
@@ -60,81 +56,14 @@ public class LocalOperationHelper {
         return mkdirs ? tempPath : null;
     }
 
-    public ShardUploadFileResponse shardUpload(ShardUploadFileData shardUploadFileData) {
-        ShardUploadFileResponse shardUploadFileResponse = new ShardUploadFileResponse();
-        shardUploadFileResponse.setSuccess(false);
-        //一般规则：本次文件的MD5码
-        String md5 = shardUploadFileData.getUniqueIdentifier();
-        if (StringUtils.isBlank(md5)) {
-            shardUploadFileResponse.setErrorMsg("uniqueIdentifier is empty");
-            return shardUploadFileResponse;
-        }
-
-        //必须求出缓存中的PartETags，在分片合成文件中需要以此为依据，合并文件返回最终地址
-        UploadContext.Content content = UploadContext.getUpload(shardUploadFileData.getUploadId());
-        if (ObjectUtil.isNull(content)) {
-            shardUploadFileResponse.setErrorMsg("file has expiration...");
-            return shardUploadFileResponse;
-        }
-
-        MultipartFile file = shardUploadFileData.getFile();
-        String tempPath = resoleFileTempPath(md5);
-        int currentChunkNo = shardUploadFileData.getChunkNumber();
-        int totalChunks = shardUploadFileData.getTotalChunks();
-        String uploadId = shardUploadFileData.getUploadId();
-        //字节流转换
-        Set<Integer> parts = content.getParts();
-        boolean merge = false;
-        //分片上传
-        //非已上传的分片
-        if (!parts.contains(currentChunkNo)) {
-            //上传分片
-            boolean success = this.uploadSlice(shardUploadFileData, tempPath);
-            if (success) {
-                parts.add(currentChunkNo);
-                //如果是最后一个子分片，将合并线程放开
-                if (currentChunkNo != totalChunks && parts.size() == totalChunks) {
-                    merge = true;
-                }
-            }
-        }
-        //分片编号等于总片数的时候合并文件,如果符合条件则合并文件，否则继续等待
-        if (currentChunkNo == totalChunks) {
-            //合并文件
-            if (parts.size() != totalChunks) {
-                //挂起 等待小分片上传完毕
-            } else {
-                merge = true;
-            }
-
-        }
-        content.setParts(parts);
-        UploadContext.setCache(uploadId, content);
-        if (merge) {
-            //最后一个分支上传完成
-            try {
-                String url = this.mergeSliceFile(tempPath, content.getFileKey(), file.getOriginalFilename());
-                shardUploadFileResponse.setSuccess(true);
-                shardUploadFileResponse.setFilePath(url);
-                shardUploadFileResponse.setTotalSize(shardUploadFileData.getTotalSize());
-                shardUploadFileResponse.setFileName(file.getOriginalFilename());
-                shardUploadFileResponse.setIdentifier(md5);
-            } catch (Exception e) {
-                e.printStackTrace();
-                shardUploadFileResponse.setSuccess(false);
-            } finally {
-                /**
-                 * 如果是最后一个该文件的上传请求就清空缓存
-                 */
-                UploadContext.removeCache(uploadId);
-                UploadContext.removeId(md5);
-                this.deleteSliceTemp(tempPath);
-            }
-        }
-        return shardUploadFileResponse;
-    }
-
-    private boolean uploadSlice(ShardUploadFileData shardUploadFileData, String tempPath) {
+    /**
+     * 上传分片文件
+     *
+     * @param shardUploadFileData
+     * @param tempPath
+     * @return
+     */
+    public boolean uploadSlice(ShardUploadFileData shardUploadFileData, String tempPath) {
         boolean success = true;
         //开始进行切片化上传
         File sliceFile = new File(tempPath + shardUploadFileData.getChunkNumber());
@@ -176,7 +105,7 @@ public class LocalOperationHelper {
      * @param tempPath
      * @param fileName
      */
-    private String mergeSliceFile(String tempPath, String folderName, String fileName) {
+    public String mergeSliceFile(String tempPath, String folderName, String fileName) {
         //分片文件的临时目录
         File sliceFile = new File(tempPath);
         //本次文件的保存位置
@@ -225,7 +154,7 @@ public class LocalOperationHelper {
      *
      * @param tempPath
      */
-    private void deleteSliceTemp(String tempPath) {
+    public void deleteSliceTemp(String tempPath) {
         File file = new File(tempPath);
         if (file.exists()) {
             File[] files = file.listFiles();

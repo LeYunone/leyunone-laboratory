@@ -17,7 +17,8 @@ import java.util.List;
 
 /**
  * :)
- *  阿里云文件操作
+ * 阿里云文件操作
+ *
  * @Author LeYunone
  * @Date 2024/12/23 16:33
  */
@@ -44,17 +45,18 @@ public class AliOssOperationHelper {
      * 分块上传完成获取结果
      */
     public String completePartUploadFile(String fileName, String uploadId, List<PartETag> partETags) {
+        String fileKey = prefix + "/" + fileName;
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
-        CompleteMultipartUploadRequest request = new CompleteMultipartUploadRequest(bucketName, fileName, uploadId,
+        CompleteMultipartUploadRequest request = new CompleteMultipartUploadRequest(bucketName, fileKey, uploadId,
                 partETags);
         ossClient.completeMultipartUpload(request);
         ossClient.shutdown();
-        return getDownloadUrl(fileName);
+        return getDownloadUrl(fileKey);
     }
 
 
     /**
-     * @param fileKey  文件名称
+     * @param fileName  文件名称
      * @param is       文件流数据
      * @param uploadId oss唯一分片id
      * @param fileMd5  文件的md5值（非必传）
@@ -62,7 +64,9 @@ public class AliOssOperationHelper {
      * @param partSize 分片大小
      * @return
      */
-    public PartETag partUploadFile(String fileKey, InputStream is, String uploadId, String fileMd5, int partNum, long partSize) {
+    public PartETag partUploadFile(String fileName, InputStream is, String uploadId, String fileMd5, int partNum, long partSize) {
+        String fileKey = prefix + "/" + fileName;
+
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
 
         UploadPartRequest uploadPartRequest = new UploadPartRequest();
@@ -82,9 +86,11 @@ public class AliOssOperationHelper {
      * 分块上传完成获取结果
      */
     public String getUploadId(String fileName) {
+        String fileKey = prefix + "/" + fileName;
+
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
 
-        InitiateMultipartUploadRequest request = new InitiateMultipartUploadRequest(bucketName, fileName);
+        InitiateMultipartUploadRequest request = new InitiateMultipartUploadRequest(bucketName, fileKey);
         // 初始化分片
         InitiateMultipartUploadResult unrest = ossClient.initiateMultipartUpload(request);
         ossClient.shutdown();
@@ -94,46 +100,53 @@ public class AliOssOperationHelper {
 
 
     public String getFileUrl(String name, Long expireTime) {
+        String fileKey = prefix + "/" + name;
+
         if (ObjectUtil.isNull(expireTime)) {
-            return this.getDownloadUrl(name);
+            return this.getDownloadUrl(fileKey);
         }
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
 
         // 设置URL过期时间为1小时。
         Date expiration = new Date(System.currentTimeMillis() + expireTime);
         // 生成以GET方法访问的签名URL，访客可以直接通过浏览器访问相关内容。
-        URL url = ossClient.generatePresignedUrl(bucketName, name, expiration);
+        URL url = ossClient.generatePresignedUrl(bucketName, fileKey, expiration);
         // 关闭OSSClient。
         ossClient.shutdown();
         return url.toString();
     }
 
     public void deleteFile(String fileName) {
+        String fileKey = prefix + "/" + fileName;
+
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
 
         // 删除文件。如需删除文件夹，请将ObjectName设置为对应的文件夹名称。如果文件夹非空，则需要将文件夹下的所有object删除后才能删除该文件夹。
-        ossClient.deleteObject(bucketName, fileName);
+        ossClient.deleteObject(bucketName, fileKey);
         // 关闭OSSClient。
         ossClient.shutdown();
     }
 
     public String uploadFile(String name, InputStream stream) {
+        String fileKey = prefix + "/" + name;
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
 
         // 创建OSSClient实例。
         // 上传文件到指定的存储空间（bucketName）并将其保存为指定的文件名称（objectName）。
-        ossClient.putObject(bucketName, name, stream);
+        ossClient.putObject(bucketName, fileKey, stream);
         // 关闭OSSClient。
         ossClient.shutdown();
-        return getDownloadUrl(name);
+        return getDownloadUrl(fileKey);
     }
 
     public void cancelFile(String fileName, String uploadId) {
+        String fileKey = prefix + "/" + fileName;
+
         // 创建OSSClient实例。
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
         // 取消分片上传。
         AbortMultipartUploadRequest abortMultipartUploadRequest =
-                new AbortMultipartUploadRequest(bucketName, fileName, uploadId);
+                new AbortMultipartUploadRequest(bucketName, fileKey, uploadId);
         ossClient.abortMultipartUpload(abortMultipartUploadRequest);
         ossClient.shutdown();
     }
@@ -152,13 +165,10 @@ public class AliOssOperationHelper {
     /**
      * 获取bucket文件的下载链接
      */
-    private String getDownloadUrl(String fileName) {
+    private String getDownloadUrl(String fileKey) {
         StringBuilder url = new StringBuilder();
         //文件前缀为项目名
-        url.append("https://").append(bucketUrl).append("/").append(prefix);
-        if (fileName != null && !"".equals(fileName)) {
-            url.append(fileName);
-        }
+        url.append("https://").append(bucketUrl).append("/").append(fileKey);
         return url.toString();
     }
 
