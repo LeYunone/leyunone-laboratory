@@ -76,7 +76,7 @@ public interface CacheManager {
      * @param value value
      * @return
      */
-    boolean upDataValueNotExpireTime(String key, String value);
+    boolean updateValueNotExpireTime(String key, String value);
 
     /**
      * 添加list类型

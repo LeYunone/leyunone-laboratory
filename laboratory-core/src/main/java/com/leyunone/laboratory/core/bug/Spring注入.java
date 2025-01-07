@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  * @email 365627310@qq.com
  * @date 2022-10-30
  */
-@SpringBootApplication
+//@SpringBootApplication
 public class Spring注入 {
 
     @Autowired
@@ -30,7 +30,7 @@ public class Spring注入 {
     //ConfigurationClassBeanDefinitionReader loadBeanDefinitionsForBeanMethod
 }
 
-@Configuration
+//@Configuration
 class config{
 
     @Bean

@@ -18,6 +18,9 @@
     <modules>
         <module>laboratory-core</module>
         <module>laboratory-web</module>
+        <module>laboratory-rpc</module>
+        <module>laboratory-jdk-version</module>
+        <module>laboratory-jdk-version-sample</module>
     </modules>
     <dependencyManagement>
         <dependencies>

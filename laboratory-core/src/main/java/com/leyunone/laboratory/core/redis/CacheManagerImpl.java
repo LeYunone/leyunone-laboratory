@@ -39,7 +39,7 @@ public class CacheManagerImpl implements CacheManager {
     }
 
     @Override
-    public boolean addDate(String key, String value) {
+    public boolean addData(String key, String value) {
         if(key.isEmpty()){
             return false;
         }
@@ -92,7 +92,7 @@ public class CacheManagerImpl implements CacheManager {
     }
 
     @Override
-    public boolean addDate(String key, String value, Long expireTime) {
+    public boolean addData(String key, String value, Long expireTime) {
         if(key.isEmpty()){
             return false;
         }
@@ -101,7 +101,7 @@ public class CacheManagerImpl implements CacheManager {
     }
 
     @Override
-    public boolean addDate(String key, String value, long expireTime,TimeUnit timeUnit) {
+    public boolean addData(String key, String value, long expireTime,TimeUnit timeUnit) {
         if(key.isEmpty()){
             return false;
         }
@@ -110,7 +110,7 @@ public class CacheManagerImpl implements CacheManager {
     }
 
     @Override
-    public void addDate(String key, String hashKey, Object value, long expireTime) {
+    public void addData(String key, String hashKey, Object value, long expireTime) {
         Objects.requireNonNull(key,"key can't be null");
         Objects.requireNonNull(hashKey,"hashKey can't be null");
         Objects.requireNonNull(value,"value can't be null");
@@ -121,7 +121,7 @@ public class CacheManagerImpl implements CacheManager {
     }
 
     @Override
-    public void addBatchWithDate(Map<String,String> maps, long expire) {
+    public void addBatchWithData(Map<String,String> maps, long expire) {
         if (CollectionUtils.isEmpty(maps)) {
             return;
         }
@@ -145,7 +145,7 @@ public class CacheManagerImpl implements CacheManager {
     }
 
     @Override
-    public boolean addDate(String key, List value, int isleft) {
+    public boolean addData(String key, List value, int isleft) {
         if(key.isEmpty()){
             return false;
         }
@@ -163,7 +163,7 @@ public class CacheManagerImpl implements CacheManager {
     }
 
     @Override
-    public boolean addDate(String key, HashMap value) {
+    public boolean addData(String key, HashMap value) {
         if(key.isEmpty()){
             return false;
         }
@@ -174,7 +174,7 @@ public class CacheManagerImpl implements CacheManager {
 
 
     @Override
-    public boolean addDate(String key, String ... value) {
+    public boolean addData(String key, String ... value) {
         if(key.isEmpty()){
             return false;
         }
@@ -183,7 +183,7 @@ public class CacheManagerImpl implements CacheManager {
     }
 
     @Override
-    public boolean addDate(String key, TreeSet value) {
+    public boolean addData(String key, TreeSet value) {
         if(key.isEmpty()){
             return false;
         }
@@ -328,7 +328,7 @@ public class CacheManagerImpl implements CacheManager {
 
 
     @Override
-    public boolean addDate(String key, String hashKey, Object object) {
+    public boolean addData(String key, String hashKey, Object object) {
         if (StringUtils.isEmpty(key) && StringUtils.isEmpty(hashKey)){
             return false;
         }

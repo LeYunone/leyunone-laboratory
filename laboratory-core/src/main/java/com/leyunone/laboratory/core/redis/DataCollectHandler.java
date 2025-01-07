@@ -152,7 +152,7 @@ public class DataCollectHandler {
                     inStorage = true;
                 }
                 logCache.setCurrentWater(newValue);
-                cacheManager.upDataValueNotExpireTime(key, JSONObject.toJSONString(logCache));
+                cacheManager.updateValueNotExpireTime(key, JSONObject.toJSONString(logCache));
             }
 
         } else {
