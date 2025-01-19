@@ -1,6 +1,6 @@
 package com.leyunone.laboratory.core.util.excel;
 
-import com.alibaba.excel.annotation.ExcelProperty;
+import cn.idev.excel.annotation.ExcelProperty;
 
 /**
  * @author LeYuna

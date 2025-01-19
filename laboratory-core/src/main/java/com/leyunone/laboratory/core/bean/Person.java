@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 /**
  * @author leyunone
  * @date 2022-04-16
@@ -21,7 +24,19 @@ public class Person {
 
     private int age;
 
-    public Person(int age){
-        this.age=age;
+    private List<Son> sons;
+
+    private Long like;
+
+    private LocalDateTime birthDay = LocalDateTime.now();
+
+    public Person(int age) {
+        this.age = age;
+    }
+
+    public Person(String id, String name, int age) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
     }
 }

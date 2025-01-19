@@ -34,7 +34,7 @@ public class IpLimiter {
     @Autowired
     private HttpServletRequest request;
 
-    @Around("execution(* com.leyunone.laboratory..*.*())")
+    @Around("execution(* com.leyunone.laboratory..*controller.*())")
     public Object around(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         //代理透传过来的ip
         String realIp = request.getHeader("X-Real-IP");
@@ -43,7 +43,7 @@ public class IpLimiter {
         RateLimiter rateLimiter = limiterCache.get(key, () -> RateLimiter.create(DEFAULT_LIMITER_COUNT));
         if (!rateLimiter.tryAcquire()) {
             //限流
-            throw new RuntimeException();
+            throw new RuntimeException("ip limiter");
         }
         return proceedingJoinPoint.proceed();
     }

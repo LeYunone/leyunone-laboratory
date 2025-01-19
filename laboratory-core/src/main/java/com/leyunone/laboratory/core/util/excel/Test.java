@@ -1,6 +1,6 @@
 package com.leyunone.laboratory.core.util.excel;
 
-import com.alibaba.excel.EasyExcel;
+import cn.idev.excel.EasyExcel;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
